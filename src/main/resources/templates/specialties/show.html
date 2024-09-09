@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show patient</title>
+</head>
+<body>
+
+<p th:text="${specialty.getId()}">VALUE</p>
+
+<p th:text="${specialty.getName()}">VALUE</p>
+
+<a th:href="@{/specialties/{id}/edit(id=${specialty.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/specialties/{id}(id=${specialty.getId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+
+</body>
+</html>

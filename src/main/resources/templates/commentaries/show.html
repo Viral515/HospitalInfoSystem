@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show patient</title>
+</head>
+<body>
+
+<p th:text="${commentary.getId()}">VALUE</p>
+
+<p th:text="${commentary.getScore()}">VALUE</p>
+<p th:text="${commentary.getDescription()}">VALUE</p>
+<p th:text="${'Doctor: ' + commentary.getDoctor()}">VALUE</p>
+
+<a th:href="@{/commentaries/{id}/edit(id=${commentary.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/commentaries/{id}(id=${commentary.getId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+
+</body>
+</html>

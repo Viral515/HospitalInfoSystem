@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New patient</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/commentaries}" th:object="${commentary}">
+    <label for="score">Enter score: </label>
+    <input type="text" th:field="*{score}" id="score"/>
+    <div style="color:red" th:if="${#fields.hasErrors('score')}" th:errors="*{score}">Score Error</div>
+    <br/>
+    <label for="description">Enter description: </label>
+    <input type="text" th:field="*{description}" id="description"/>
+    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{description}">Description Error</div>
+    <br/>
+    <label for="doctor">Enter doctor id: </label>
+    <input type="text" th:field="*{doctor}" id="doctor"/>
+    <div style="color:red" th:if="${#fields.hasErrors('doctor')}" th:errors="*{doctor}">Doctor Error</div>
+    <br/>
+    <input type="submit" value="Create!"/>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit patient</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/patients/{id}(id=${patient.getId()})}" th:object="${patient}">
+    <label for="fullName">Enter full name: </label>
+    <input type="text" th:field="*{fullName}" id="fullName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Full name Error</div>
+    <br/>
+    <label for="age">Enter age: </label>
+    <input type="text" th:field="*{age}" id="age"/>
+    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+    <br/>
+    <label for="policyNumber">Enter policy number: </label>
+    <input type="text" th:field="*{policyNumber}" id="policyNumber"/>
+    <div style="color:red" th:if="${#fields.hasErrors('policyNumber')}" th:errors="*{policyNumber}">
+        Policy number Error</div>
+    <br/>
+    <label for="phoneNumber">Enter phone number: </label>
+    <input type="text" th:field="*{phoneNumber}" id="phoneNumber"/>
+    <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">
+        Phone number Error</div>
+    <br/>
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>
