@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit commentaries</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/commentaries/{id}(id=${commentary.getId()})}" th:object="${commentary}">
+    <label for="score">Enter score: </label>
+    <input type="text" th:field="*{score}" id="score"/>
+    <div style="color:red" th:if="${#fields.hasErrors('score')}" th:errors="*{score}">Score Error</div>
+    <br/>
+    <label for="description">Enter description: </label>
+    <input type="text" th:field="*{description}" id="description"/>
+    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
+    <br/>
+    <input type="hidden" th:field="*{doctor}" id="doctor" th:value="${commentary.getDoctor().getId()}" readonly/>
+    <label th:text="'Doctor: ' + ${commentary.getDoctor().getFullName()}">Value</label>
+    <br>
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

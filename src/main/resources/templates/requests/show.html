@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show request</title>
+</head>
+<body>
+
+<p th:text="${request.getId()}">VALUE</p>
+
+<p th:text="${'Patient: ' + request.getPatient().getFullName()}">VALUE</p>
+<p th:text="${'Doctor: ' + request.getDoctor().getFullName() + ', '
++ request.getDoctor().getSpecialty().getName()}">VALUE</p>
+<p th:text="${'Data: ' + request.getDesiredDate()}">VALUE</p>
+
+<a th:href="@{/requests/{id}/edit(id=${request.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/requests/{id}(id=${request.getId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New doctor</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/doctors}" th:object="${doctor}">
+    <label for="fullName">Enter full name: </label>
+    <input type="text" th:field="*{fullName}" id="fullName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Full name Error</div>
+    <br/>
+    <label for="cabinet">Enter cabinet: </label>
+    <input type="text" th:field="*{cabinet}" id="cabinet"/>
+    <div style="color:red" th:if="${#fields.hasErrors('cabinet')}" th:errors="*{cabinet}">Cabinet Error</div>
+    <br/>
+    <label for="specialty">Select the specialty:</label>
+    <select th:object="${specialty}" th:field="*{id}" id="specialty">
+        <option th:each="specialty : ${specialties}" th:value="${specialty.getId()}" th:text="${specialty.getName()}">
+        </option>
+    </select>
+    <input type="submit" value="Create!"/>
+</form>
+
+</body>
+</html>

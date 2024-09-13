@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Requests</title>
+</head>
+<body>
+
+<div th:each="request : ${requests}">
+    <a th:href="@{/requests/{id}(id=${request.getId()})}"
+       th:text="${request.getPatient().getFullName() + ', ' + request.getDoctor().getFullName() + ', '
+       + request.getDesiredDate()}">request</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/requests/new">Create new request</a>
+
+</body>
+</html>

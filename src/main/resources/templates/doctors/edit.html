@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit doctor</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/doctors/{id}(id=${doctor.getId()})}" th:object="${doctor}">
+    <label for="fullName">Enter full name: </label>
+    <input type="text" th:field="*{fullName}" id="fullName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Full name Error</div>
+    <br/>
+    <label for="cabinet">Enter cabinet: </label>
+    <input type="text" th:field="*{cabinet}" id="cabinet"/>
+    <div style="color:red" th:if="${#fields.hasErrors('cabinet')}" th:errors="*{cabinet}">Cabinet Error</div>
+    <br/>
+    <input type="hidden" th:field="*{specialty.id}" th:value="${doctor.getSpecialty().getId()}"/>
+    <label th:text="'Doctor\'s specialty: ' + ${doctor.getSpecialty().getName()}">Value</label>
+    <br>
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

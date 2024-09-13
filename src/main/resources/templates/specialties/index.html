@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients</title>
+</head>
+<body>
+
+<div th:each="specialty : ${specialties}">
+    <a th:href="@{/specialties/{id}(id=${specialty.getId()})}"
+       th:text="${specialty.getName()}">specialty</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/specialties/new">Create new specialty</a>
+
+</body>
+</html>

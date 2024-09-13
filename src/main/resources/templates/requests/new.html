@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New commentary</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/requests}" th:object="${request}">
+    <label for="patient">Select patient:</label>
+    <select th:object="${patient}" th:field="*{patientId}" id="patient">
+        <option th:each="patient : ${patients}" th:value="${patient.getPatientId()}" th:text="${patient.getFullName()}">
+        </option>
+    </select>
+    <br>
+    <label for="doctor">Select doctor:</label>
+    <select th:object="${doctor}" th:field="*{id}" id="doctor">
+        <option th:each="doctor : ${doctors}" th:value="${doctor.getId()}" th:text="${doctor.getFullName()}">
+        </option>
+    </select>
+    <br>
+    <label for="desiredDate">Enter desired date: </label>
+    <input type="date" th:field="*{desiredDate}" id="desiredDate"/>
+    <div style="color:red" th:if="${#fields.hasErrors('desiredDate')}" th:errors="*{desiredDate}">Desired Date Error</div>
+    <br/>
+    <input type="submit" value="Create!"/>
+</form>
+
+</body>
+</html>
