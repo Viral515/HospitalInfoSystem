@@ -1,9 +1,11 @@
 package ru.egarcourses.HospitalInfoSystem.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "Request")
@@ -23,14 +25,16 @@ public class Request {
     private Doctor doctor;
 
     @Column(name = "desired_date")
-    private Date desiredDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Future
+    private LocalDate desiredDate;
 
     @Column(name = "admission_date")
     private LocalDateTime admissionDate;
 
     public Request() {}
 
-    public Request(Date desiredDate, LocalDateTime admissionDate) {
+    public Request(LocalDate desiredDate, LocalDateTime admissionDate) {
         this.desiredDate = desiredDate;
         this.admissionDate = admissionDate;
     }
@@ -59,11 +63,11 @@ public class Request {
         this.doctor = doctor;
     }
 
-    public Date getDesiredDate() {
+    public LocalDate getDesiredDate() {
         return desiredDate;
     }
 
-    public void setDesiredDate(Date desiredDate) {
+    public void setDesiredDate(LocalDate desiredDate) {
         this.desiredDate = desiredDate;
     }
 

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New patient</title>
+    <title>New commentary</title>
 </head>
 <body>
 
@@ -13,11 +13,13 @@
     <br/>
     <label for="description">Enter description: </label>
     <input type="text" th:field="*{description}" id="description"/>
-    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{description}">Description Error</div>
+    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
     <br/>
-    <label for="doctor">Enter doctor id: </label>
-    <input type="text" th:field="*{doctor}" id="doctor"/>
-    <div style="color:red" th:if="${#fields.hasErrors('doctor')}" th:errors="*{doctor}">Doctor Error</div>
+    <label for="doctor">Select doctor:</label>
+    <select th:object="${doctor}" th:field="*{id}" id="doctor">
+        <option th:each="doctor : ${doctors}" th:value="${doctor.getId()}" th:text="${doctor.getFullName()}">
+        </option>
+    </select>
     <br/>
     <input type="submit" value="Create!"/>
 </form>

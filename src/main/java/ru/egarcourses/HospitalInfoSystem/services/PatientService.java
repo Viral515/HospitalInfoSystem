@@ -37,7 +37,7 @@ public class PatientService {
 
     @Transactional
     public void update(int id, Patient updatedPatient) {
-        updatedPatient.setId(id);
+        updatedPatient.setPatientId(id);
         patientRepository.save(updatedPatient);
     }
 

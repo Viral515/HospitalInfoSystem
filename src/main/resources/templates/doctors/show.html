@@ -5,11 +5,11 @@
     <title>Show doctor</title>
 </head>
 <body>
-
+<!--поле показывающее id для удобной отладки-->
 <p th:text="${doctor.getId()}">VALUE</p>
 
-<p th:text="${doctor.getFullName()}">VALUE</p>
-<p th:text="${doctor.getCabinet()}">VALUE</p>
+<p th:text="${'Doctor: ' + doctor.getFullName()}">VALUE</p>
+<p th:text="${'Cabinet: ' + doctor.getCabinet()}">VALUE</p>
 <p th:text="${'Specialty: ' + doctor.getSpecialty()}">VALUE</p>
 
 <a th:href="@{/doctors/{id}/edit(id=${doctor.getId()})}">Edit</a>

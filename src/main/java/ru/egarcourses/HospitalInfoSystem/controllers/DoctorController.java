@@ -46,8 +46,9 @@ public class DoctorController {
 
     @PostMapping()
     public String create(@ModelAttribute("doctor") @Valid Doctor doctor, BindingResult bindingResult,
-                         @ModelAttribute("specialty") Specialty specialty){
+                         @ModelAttribute("specialty") Specialty specialty, Model model){
         if(bindingResult.hasErrors()){
+            model.addAttribute("specialties", specialtyService.findAll());
             return "doctors/new";
         }
         doctor.setSpecialty(specialty);

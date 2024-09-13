@@ -1,6 +1,9 @@
 package ru.egarcourses.HospitalInfoSystem.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Table(name = "Commentary")
@@ -12,6 +15,9 @@ public class Commentary {
     private int id;
 
     @Column(name = "score")
+    @Range(min = 1, max = 5, message = "The score must be a number from 1 to 5")
+    @NotNull
+    @Digits(integer = 1, fraction = 0, message = "The score must be a number")
     private int score;
 
     @Column(name = "description")

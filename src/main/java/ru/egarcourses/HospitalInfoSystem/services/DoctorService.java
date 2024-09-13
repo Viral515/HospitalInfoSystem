@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.egarcourses.HospitalInfoSystem.models.Doctor;
-import ru.egarcourses.HospitalInfoSystem.models.Specialty;
 import ru.egarcourses.HospitalInfoSystem.repositories.DoctorRepository;
 
 import java.util.List;
@@ -44,14 +43,5 @@ public class DoctorService {
     @Transactional
     public void delete(int id) {
         doctorRepository.deleteById(id);
-    }
-
-    @Transactional
-    public void assign(int id, Specialty selectedSpecialty) {
-        doctorRepository.findById(id).ifPresent(
-                doctor -> {
-                    doctor.setSpecialty(selectedSpecialty);
-                }
-        );
     }
 }

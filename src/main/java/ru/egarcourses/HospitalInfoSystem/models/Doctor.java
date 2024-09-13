@@ -1,6 +1,10 @@
 package ru.egarcourses.HospitalInfoSystem.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.List;
 
@@ -14,9 +18,13 @@ public class Doctor {
     private int id;
 
     @Column(name = "full_name")
+    @Pattern(regexp = "^[a-zA-Z\\s]+$")
     private String fullName;
 
     @Column(name = "cabinet")
+    @Range(min = 100, max = 999, message = "The score must be a number from 100 to 999")
+    @NotNull
+    @Digits(integer = 3, fraction = 0, message = "The score must be a number")
     private String cabinet;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -86,7 +94,6 @@ public class Doctor {
 
     @Override
     public String toString() {
-        return "Doctor [id=" + id + ", fullName='" + fullName + '\'' + ", cabinet='" + cabinet + '\'' +  ", specialty="
-                + specialty + "]";
+        return fullName;
     }
 }

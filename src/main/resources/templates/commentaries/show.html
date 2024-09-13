@@ -6,11 +6,12 @@
 </head>
 <body>
 
+<!--поле показывающее id для удобной отладки-->
 <p th:text="${commentary.getId()}">VALUE</p>
 
-<p th:text="${commentary.getScore()}">VALUE</p>
-<p th:text="${commentary.getDescription()}">VALUE</p>
-<p th:text="${'Doctor: ' + commentary.getDoctor()}">VALUE</p>
+<p th:text="${'Doctor: ' + commentary.getDoctor().getFullName()}">VALUE</p>
+<p th:text="${'Score: ' + commentary.getScore()}">VALUE</p>
+<p th:text="${'Commentary: ' + commentary.getDescription()}">VALUE</p>
 
 <a th:href="@{/commentaries/{id}/edit(id=${commentary.getId()})}">Edit</a>
 

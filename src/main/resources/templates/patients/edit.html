@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/patients/{id}(id=${patient.getId()})}" th:object="${patient}">
+<form th:method="PATCH" th:action="@{/patients/{id}(id=${patient.getPatientId()})}" th:object="${patient}">
     <label for="fullName">Enter full name: </label>
     <input type="text" th:field="*{fullName}" id="fullName"/>
     <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Full name Error</div>

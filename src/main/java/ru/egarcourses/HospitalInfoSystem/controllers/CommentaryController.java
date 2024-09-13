@@ -7,18 +7,21 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.models.Commentary;
-import ru.egarcourses.HospitalInfoSystem.models.Patient;
+import ru.egarcourses.HospitalInfoSystem.models.Doctor;
 import ru.egarcourses.HospitalInfoSystem.services.CommentaryService;
+import ru.egarcourses.HospitalInfoSystem.services.DoctorService;
 
 @Controller
 @RequestMapping("/commentaries")
 public class CommentaryController {
 
     private final CommentaryService commentaryService;
+    private final DoctorService doctorService;
 
     @Autowired
-    public CommentaryController(CommentaryService commentaryService) {
+    public CommentaryController(CommentaryService commentaryService, DoctorService doctorService) {
         this.commentaryService = commentaryService;
+        this.doctorService = doctorService;
     }
 
     @GetMapping()
@@ -34,16 +37,20 @@ public class CommentaryController {
     }
 
     @GetMapping("/new")
-    public String newCommentary(@ModelAttribute("commentary") Commentary pcommentary){
+    public String newCommentary(@ModelAttribute("commentary") Commentary pcommentary, Model model,
+                                @ModelAttribute("doctor") Doctor doctor){
+        model.addAttribute("doctors", doctorService.findAll());
         return "commentaries/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("commentary") @Valid Commentary commentary, BindingResult bindingResult){
+    public String create(@ModelAttribute("commentary") @Valid Commentary commentary, BindingResult bindingResult,
+                         @ModelAttribute("doctor") Doctor doctor, Model model){
         if(bindingResult.hasErrors()){
+            model.addAttribute("doctors", doctorService.findAll());
             return "commentaries/new";
         }
-
+        commentary.setDoctor(doctor);
         commentaryService.save(commentary);
         return "redirect:/commentaries";
     }

@@ -7,7 +7,7 @@
 <body>
 
 <div th:each="patient : ${patients}">
-    <a th:href="@{/patients/{id}(id=${patient.getId()})}"
+    <a th:href="@{/patients/{id}(id=${patient.getPatientId()})}"
        th:text="${patient.getFullName() + ', ' + patient.getAge() + ', ' + patient.getPolicyNumber() + ', '
        + patient.getPhoneNumber() }">patient</a>
 </div>

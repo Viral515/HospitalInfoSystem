@@ -15,10 +15,9 @@
     <input type="text" th:field="*{cabinet}" id="cabinet"/>
     <div style="color:red" th:if="${#fields.hasErrors('cabinet')}" th:errors="*{cabinet}">Cabinet Error</div>
     <br/>
-    <label for="specialty">Enter specialty: </label>
-    <input type="text" th:field="*{specialty}" id="specialty"/>
-    <div style="color:red" th:if="${#fields.hasErrors('specialty')}" th:errors="*{specialty}">Specialty Error</div>
-    <br/>
+    <input type="hidden" th:field="*{specialty.id}" th:value="${doctor.getSpecialty().getId()}"/>
+    <label th:text="'Doctor\'s specialty: ' + ${doctor.getSpecialty().getName()}">Value</label>
+    <br>
     <input type="submit" value="Update!"/>
 </form>
 

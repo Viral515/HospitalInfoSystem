@@ -9,7 +9,7 @@
 <div th:each="commentary : ${commentaries}">
     <a th:href="@{/commentaries/{id}(id=${commentary.getId()})}"
        th:text="${commentary.getScore() + ', ' + commentary.getDescription() + ', '
-       + commentary.getDoctor()}">commentary</a>
+       + commentary.getDoctor().getFullName()}">commentary</a>
 </div>
 
 <br/>
