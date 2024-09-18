@@ -6,75 +6,77 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.egarcourses.HospitalInfoSystem.models.Commentary;
-import ru.egarcourses.HospitalInfoSystem.models.Doctor;
-import ru.egarcourses.HospitalInfoSystem.services.CommentaryService;
-import ru.egarcourses.HospitalInfoSystem.services.DoctorService;
+import ru.egarcourses.HospitalInfoSystem.dto.CommentaryDTO;
+import ru.egarcourses.HospitalInfoSystem.dto.DoctorDTO;
+import ru.egarcourses.HospitalInfoSystem.services.impl.CommentaryServiceImpl;
+import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
 
 @Controller
 @RequestMapping("/commentaries")
 public class CommentaryController {
 
-    private final CommentaryService commentaryService;
-    private final DoctorService doctorService;
+    private final CommentaryServiceImpl commentaryServiceImpl;
+    private final DoctorServiceImpl doctorServiceImpl;
 
     @Autowired
-    public CommentaryController(CommentaryService commentaryService, DoctorService doctorService) {
-        this.commentaryService = commentaryService;
-        this.doctorService = doctorService;
+    public CommentaryController(CommentaryServiceImpl commentaryServiceImpl, DoctorServiceImpl doctorServiceImpl) {
+        this.commentaryServiceImpl = commentaryServiceImpl;
+        this.doctorServiceImpl = doctorServiceImpl;
     }
 
     @GetMapping()
     public String index(Model model){
-        model.addAttribute("commentaries", commentaryService.findAll());
+        model.addAttribute("commentaries", commentaryServiceImpl.findAll());
         return "commentaries/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model){
-        model.addAttribute("commentary", commentaryService.findById(id));
+        CommentaryDTO commentaryDTO = commentaryServiceImpl.findById(id);
+        model.addAttribute("commentary", commentaryDTO);
+        model.addAttribute("doctor", doctorServiceImpl.findById(commentaryDTO.getDoctorId()));
         return "commentaries/show";
     }
 
     @GetMapping("/new")
-    public String newCommentary(@ModelAttribute("commentary") Commentary pcommentary, Model model,
-                                @ModelAttribute("doctor") Doctor doctor){
-        model.addAttribute("doctors", doctorService.findAll());
+    public String newCommentary(@ModelAttribute("commentaryDTO") CommentaryDTO commentaryDTO, Model model,
+                                @ModelAttribute("doctorDTO") DoctorDTO doctorDTO){
+        model.addAttribute("doctorsDTO", doctorServiceImpl.findAll());
         return "commentaries/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("commentary") @Valid Commentary commentary, BindingResult bindingResult,
-                         @ModelAttribute("doctor") Doctor doctor, Model model){
+    public String create(@ModelAttribute("commentaryDTO") @Valid CommentaryDTO commentaryDTO, BindingResult bindingResult,
+                         @ModelAttribute("doctorDTO") DoctorDTO doctorDTO, Model model){
         if(bindingResult.hasErrors()){
-            model.addAttribute("doctors", doctorService.findAll());
+            model.addAttribute("doctorsDTO", doctorServiceImpl.findAll());
             return "commentaries/new";
         }
-        commentary.setDoctor(doctor);
-        commentaryService.save(commentary);
+        commentaryDTO.setDoctorId(doctorDTO.getId());
+        commentaryServiceImpl.save(commentaryDTO);
         return "redirect:/commentaries";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id){
-        model.addAttribute("commentary", commentaryService.findById(id));
+        model.addAttribute("commentary", commentaryServiceImpl.findById(id));
         return "commentaries/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("commentary") @Valid Commentary commentary, BindingResult bindingResult,
+    public String update(@ModelAttribute("commentary") @Valid CommentaryDTO commentaryDTO, BindingResult bindingResult,
                          @PathVariable("id") int id){
         if(bindingResult.hasErrors()){
             return "commentaries/edit";
         }
 
-        commentaryService.update(id, commentary);
+        commentaryServiceImpl.update(id, commentaryDTO);
         return "redirect:/commentaries";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id){
-        commentaryService.delete(id);
+        commentaryServiceImpl.delete(id);
         return "redirect:/commentaries";
     }
 }
