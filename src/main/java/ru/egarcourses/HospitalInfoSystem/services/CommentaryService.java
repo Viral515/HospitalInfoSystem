@@ -1,47 +1,18 @@
 package ru.egarcourses.HospitalInfoSystem.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.egarcourses.HospitalInfoSystem.models.Commentary;
-import ru.egarcourses.HospitalInfoSystem.repositories.CommentaryRepository;
+import ru.egarcourses.HospitalInfoSystem.dto.CommentaryDTO;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-@Transactional(readOnly = true)
-public class CommentaryService {
+public interface CommentaryService {
 
-    private final CommentaryRepository commentaryRepository;
+    public List<CommentaryDTO> findAll();
 
-    @Autowired
-    public CommentaryService(CommentaryRepository commentaryRepository) {
-        this.commentaryRepository = commentaryRepository;
-    }
+    public CommentaryDTO findById(int id);
 
-    public List<Commentary> findAll() {
-        return commentaryRepository.findAll();
-    }
+    public void save(CommentaryDTO commentaryDTO);
 
-    public Commentary findById(int id) {
-        Optional<Commentary> foundCommentary = commentaryRepository.findById(id);
-        return foundCommentary.orElse(null);
-    }
+    public void update(int id, CommentaryDTO updatedCommentaryDTO);
 
-    @Transactional
-    public void save(Commentary commentary) {
-        commentaryRepository.save(commentary);
-    }
-
-    @Transactional
-    public void update(int id, Commentary updatedCommentary) {
-        updatedCommentary.setId(id);
-        commentaryRepository.save(updatedCommentary);
-    }
-
-    @Transactional
-    public void delete(int id) {
-        commentaryRepository.deleteById(id);
-    }
+    public void delete(int id);
 }

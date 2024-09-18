@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/commentaries}" th:object="${commentary}">
+<form th:method="POST" th:action="@{/commentaries}" th:object="${commentaryDTO}">
     <label for="score">Enter score: </label>
     <input type="text" th:field="*{score}" id="score"/>
     <div style="color:red" th:if="${#fields.hasErrors('score')}" th:errors="*{score}">Score Error</div>
@@ -16,8 +16,9 @@
     <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
     <br/>
     <label for="doctor">Select doctor:</label>
-    <select th:object="${doctor}" th:field="*{id}" id="doctor">
-        <option th:each="doctor : ${doctors}" th:value="${doctor.getId()}" th:text="${doctor.getFullName()}">
+    <select th:object="${doctorDTO}" th:field="*{id}" id="doctor">
+        <option th:each="doctorDTO : ${doctorsDTO}" th:value="${doctorDTO.getId()}"
+                th:text="${doctorDTO.getFullName()}">
         </option>
     </select>
     <br/>

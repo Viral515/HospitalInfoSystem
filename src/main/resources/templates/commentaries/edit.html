@@ -15,8 +15,8 @@
     <input type="text" th:field="*{description}" id="description"/>
     <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
     <br/>
-    <input type="hidden" th:field="*{doctor}" id="doctor" th:value="${commentary.getDoctor().getId()}" readonly/>
-    <label th:text="'Doctor: ' + ${commentary.getDoctor().getFullName()}">Value</label>
+    <input type="hidden" th:field="*{doctorId}" id="doctor" th:value="${commentary.getDoctorId()}" readonly/>
+    <label th:text="'Doctor: ' + ${commentary.getDoctorId()}">Value</label>
     <br>
     <input type="submit" value="Update!"/>
 </form>
