@@ -8,16 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.egarcourses.HospitalInfoSystem.dto.DoctorDTO;
-import ru.egarcourses.HospitalInfoSystem.dto.PatientDTO;
 import ru.egarcourses.HospitalInfoSystem.dto.RequestDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.services.impl.PatientServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.services.impl.RequestServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotUpdatedException;
-import ru.egarcourses.HospitalInfoSystem.util.RequestNotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.RequestNotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
 
@@ -39,17 +35,13 @@ public class RequestRESTController {
     @GetMapping()
     public ResponseEntity<List<RequestDTO>> index(Model model){
         final List<RequestDTO> requests = requestServiceImpl.findAll();
-        return !requests.isEmpty()
-                ? new ResponseEntity<>(requests, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(requests);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RequestDTO> show(@PathVariable("id") int id){
         final RequestDTO requestDTO = requestServiceImpl.findById(id);
-        return requestDTO != null
-                ? new ResponseEntity<>(requestDTO, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(requestDTO);
     }
 
     @PostMapping()
@@ -62,7 +54,7 @@ public class RequestRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new RequestNotCreatedException(errorMessage.toString());
+            throw new NotCreatedException(errorMessage.toString());
         }
         requestDTO.setDoctorId(doctorServiceImpl.findById(requestDTO.getDoctorId()).getId());
         requestDTO.setPatientId(patientServiceImpl.findById(requestDTO.getPatientId()).getId());
@@ -80,7 +72,7 @@ public class RequestRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new RequestNotUpdatedException(errorMessage.toString());
+            throw new NotUpdatedException(errorMessage.toString());
         }
         requestServiceImpl.update(id, requestDTO);
         return ResponseEntity.ok(HttpStatus.OK);

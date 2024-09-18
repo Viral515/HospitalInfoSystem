@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.CommentaryDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.CommentaryServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
 
@@ -31,21 +31,17 @@ public class CommentaryRESTController {
     @GetMapping()
     public ResponseEntity<List<CommentaryDTO>> index(){
         final List<CommentaryDTO> commentaries =  commentaryServiceImpl.findAll();
-        return !commentaries.isEmpty()
-                ? new ResponseEntity<>(commentaries, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(commentaries);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CommentaryDTO> show(@PathVariable("id") int id){
         final CommentaryDTO commentaryDTO = commentaryServiceImpl.findById(id);
-        return commentaryDTO != null
-                ? new ResponseEntity<>(commentaryDTO, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(commentaryDTO);
     }
 
     @PostMapping()
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid CommentaryDTO commentaryDTO,
+    public ResponseEntity<?> create(@RequestBody @Valid CommentaryDTO commentaryDTO,
                                                 BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             StringBuilder errorMessage = new StringBuilder();
@@ -54,7 +50,7 @@ public class CommentaryRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new CommentaryNotCreatedException(errorMessage.toString());
+            throw new NotCreatedException(errorMessage.toString());
         }
         commentaryDTO.setDoctorId(doctorServiceImpl.findById(commentaryDTO.getDoctorId()).getId());
         commentaryServiceImpl.save(commentaryDTO);
@@ -62,7 +58,7 @@ public class CommentaryRESTController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@RequestBody @Valid CommentaryDTO commentaryDTO, BindingResult bindingResult,
+    public ResponseEntity<?> update(@RequestBody @Valid CommentaryDTO commentaryDTO, BindingResult bindingResult,
                          @PathVariable("id") int id){
         if(bindingResult.hasErrors()){
             StringBuilder errorMessage = new StringBuilder();
@@ -71,14 +67,14 @@ public class CommentaryRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new CommentaryNotUpdatedException(errorMessage.toString());
+            throw new NotUpdatedException(errorMessage.toString());
         }
         commentaryServiceImpl.update(id, commentaryDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id){
+    public ResponseEntity<?> delete(@PathVariable("id") int id){
         commentaryServiceImpl.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.DoctorDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.services.impl.SpecialtyServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.DoctorNotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.DoctorNotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
 
@@ -31,17 +31,13 @@ public class DoctorRESTController {
     @GetMapping()
     public ResponseEntity<List<DoctorDTO>> index(){
         final List<DoctorDTO> doctors = doctorServiceImpl.findAll();
-        return !doctors.isEmpty()
-                ? ResponseEntity.ok(doctors)
-                : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(doctors);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DoctorDTO> show(@PathVariable("id") int id){
         final DoctorDTO doctorDTO = doctorServiceImpl.findById(id);
-        return doctorDTO != null
-                ? ResponseEntity.ok(doctorDTO)
-                : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(doctorDTO);
     }
 
     @PostMapping()
@@ -53,7 +49,7 @@ public class DoctorRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new DoctorNotCreatedException(errorMessage.toString());
+            throw new NotCreatedException(errorMessage.toString());
         }
         doctorDTO.setSpecialtyId(specialtyServiceImpl.findById(doctorDTO.getSpecialtyId()).getId());
         doctorServiceImpl.save(doctorDTO);
@@ -71,7 +67,7 @@ public class DoctorRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new DoctorNotUpdatedException(errorMessage.toString());
+            throw new NotUpdatedException(errorMessage.toString());
         }
         doctorServiceImpl.update(id, doctorDTO);
         return ResponseEntity.ok(HttpStatus.OK);

@@ -8,6 +8,9 @@ import ru.egarcourses.HospitalInfoSystem.models.Patient;
 import ru.egarcourses.HospitalInfoSystem.repositories.PatientRepository;
 import ru.egarcourses.HospitalInfoSystem.services.PatientService;
 import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,12 +31,19 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<PatientDTO> findAll() {
+        List<Patient> patients = patientRepository.findAll();
+        if (patients.isEmpty()) {
+            throw new NotFoundedException("Patients not founded");
+        }
         return patientRepository.findAll().stream().map(mappingUtils::mapToPatientDTO).collect(Collectors.toList());
     }
 
     @Override
     public PatientDTO findById(int id) {
         Optional<Patient> foundPatient =  patientRepository.findById(id);
+        if(!foundPatient.isPresent()) {
+            throw new NotFoundedException("Patient not founded");
+        }
         return mappingUtils.mapToPatientDTO(foundPatient.get());
     }
 
@@ -41,6 +51,9 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void save(PatientDTO patientDTO) {
         patientRepository.save(mappingUtils.mapToPatient(patientDTO));
+        if(!patientRepository.findById(patientDTO.getId()).isPresent()) {
+            throw new NotCreatedException("Patient not created");
+        }
     }
 
     @Transactional
@@ -49,11 +62,17 @@ public class PatientServiceImpl implements PatientService {
         Patient updatedPatient = mappingUtils.mapToPatient(updatedPatientDTO);
         updatedPatient.setPatientId(id);
         patientRepository.save(updatedPatient);
+        if (!patientRepository.findById(id).equals(updatedPatient)) {
+            throw new NotUpdatedException("Patient not updated");
+        }
     }
 
     @Transactional
     @Override
     public void delete(int id) {
+        if(!patientRepository.findById(id).isPresent()) {
+            throw new NotFoundedException("Patient not founded");
+        }
         patientRepository.deleteById(id);
     }
 }

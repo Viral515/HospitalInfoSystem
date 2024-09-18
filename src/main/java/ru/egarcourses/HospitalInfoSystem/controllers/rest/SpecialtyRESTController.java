@@ -4,15 +4,13 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.SpecialtyDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.SpecialtyServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotUpdatedException;
-import ru.egarcourses.HospitalInfoSystem.util.SpecialtyNotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
 
@@ -30,17 +28,13 @@ public class SpecialtyRESTController {
     @GetMapping()
     public ResponseEntity<List<SpecialtyDTO>> index(){
         final List<SpecialtyDTO> specialties = specialtyServiceImpl.findAll();
-        return !specialties.isEmpty()
-                ? new ResponseEntity<>(specialties, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(specialties);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SpecialtyDTO> show(@PathVariable("id") int id){
         final SpecialtyDTO specialtyDTO = specialtyServiceImpl.findById(id);
-        return specialtyDTO != null
-                ? new ResponseEntity<>(specialtyDTO, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(specialtyDTO);
     }
 
     @PostMapping()
@@ -52,7 +46,7 @@ public class SpecialtyRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new SpecialtyNotCreatedException(errorMessage.toString());
+            throw new NotCreatedException(errorMessage.toString());
         }
         specialtyServiceImpl.save(specialtyDTO);
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -68,7 +62,7 @@ public class SpecialtyRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new CommentaryNotUpdatedException(errorMessage.toString());
+            throw new NotUpdatedException(errorMessage.toString());
         }
         specialtyServiceImpl.update(id, specialtyDTO);
         return ResponseEntity.ok(HttpStatus.OK);

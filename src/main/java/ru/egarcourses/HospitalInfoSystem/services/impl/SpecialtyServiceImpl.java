@@ -8,6 +8,9 @@ import ru.egarcourses.HospitalInfoSystem.models.Specialty;
 import ru.egarcourses.HospitalInfoSystem.repositories.SpecialtyRepository;
 import ru.egarcourses.HospitalInfoSystem.services.SpecialtyService;
 import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,12 +31,19 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public List<SpecialtyDTO> findAll() {
+        List<Specialty> specialties = specialtyRepository.findAll();
+        if (specialties.isEmpty()) {
+            throw new NotFoundedException("Specialties are not founded");
+        }
         return specialtyRepository.findAll().stream().map(mappingUtils::mapToSpecialtyDTO).collect(Collectors.toList());
     }
 
     @Override
     public SpecialtyDTO findById(int id) {
         Optional<Specialty> specialty = specialtyRepository.findById(id);
+        if (!specialty.isPresent()) {
+            throw new NotFoundedException("Specialty not founded");
+        }
         return mappingUtils.mapToSpecialtyDTO(specialty.get());
     }
 
@@ -41,6 +51,9 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     @Override
     public void save(SpecialtyDTO specialtyDTO) {
         specialtyRepository.save(mappingUtils.mapToSpecialty(specialtyDTO));
+        if (!specialtyRepository.findById(specialtyDTO.getId()).isPresent()) {
+            throw new NotCreatedException("Specialty not created");
+        }
     }
 
     @Transactional
@@ -49,11 +62,17 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         Specialty updatedSpecialty = mappingUtils.mapToSpecialty(updatedSpecialtyDTO);
         updatedSpecialty.setId(id);
         specialtyRepository.save(updatedSpecialty);
+        if (!specialtyRepository.findById(id).equals(updatedSpecialty)) {
+            throw new NotUpdatedException("Specialty not updated");
+        }
     }
 
     @Transactional
     @Override
     public void delete(int id) {
+        if (!specialtyRepository.findById(id).isPresent()) {
+            throw new NotFoundedException("Specialty not founded");
+        }
         specialtyRepository.deleteById(id);
     }
 }

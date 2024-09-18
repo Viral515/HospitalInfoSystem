@@ -1,4 +1,4 @@
-package ru.egarcourses.HospitalInfoSystem.controllers;
+package ru.egarcourses.HospitalInfoSystem.controllers.web;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

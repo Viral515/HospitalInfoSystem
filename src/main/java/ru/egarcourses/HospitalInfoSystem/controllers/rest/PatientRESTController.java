@@ -9,10 +9,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.PatientDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.PatientServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.CommentaryNotUpdatedException;
-import ru.egarcourses.HospitalInfoSystem.util.PatientNotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.PatientNotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
 
@@ -30,17 +28,13 @@ public class PatientRESTController {
     @GetMapping()
     public ResponseEntity<List<PatientDTO>> index(){
         final List<PatientDTO> patientDTOList = patientServiceImpl.findAll();
-        return !patientDTOList.isEmpty()
-                ? ResponseEntity.ok(patientDTOList)
-                : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(patientDTOList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientDTO> show(@PathVariable("id") int id){
         final PatientDTO patientDTO = patientServiceImpl.findById(id);
-        return patientDTO != null
-                ? ResponseEntity.ok(patientDTO)
-                : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(patientDTO);
     }
 
     @PostMapping()
@@ -52,7 +46,7 @@ public class PatientRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new PatientNotCreatedException(errorMessage.toString());
+            throw new NotCreatedException(errorMessage.toString());
         }
         patientServiceImpl.save(patientDTO);
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -68,7 +62,7 @@ public class PatientRESTController {
                 errorMessage.append(fieldError.getField()).append(" - ")
                         .append(fieldError.getDefaultMessage()).append(";");
             }
-            throw new PatientNotUpdatedException(errorMessage.toString());
+            throw new NotUpdatedException(errorMessage.toString());
         }
         patientServiceImpl.update(id, patientDTO);
         return ResponseEntity.ok(HttpStatus.OK);
