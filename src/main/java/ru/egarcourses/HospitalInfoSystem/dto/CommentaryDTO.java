@@ -1,12 +1,17 @@
 package ru.egarcourses.HospitalInfoSystem.dto;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
 
 public class CommentaryDTO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Range(min = 1, max = 5, message = "The score must be a number from 1 to 5")

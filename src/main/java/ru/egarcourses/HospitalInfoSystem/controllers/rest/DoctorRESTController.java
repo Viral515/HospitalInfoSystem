@@ -20,12 +20,10 @@ import java.util.List;
 public class DoctorRESTController {
 
     private final DoctorServiceImpl doctorServiceImpl;
-    private final SpecialtyServiceImpl specialtyServiceImpl;
 
     @Autowired
-    public DoctorRESTController(DoctorServiceImpl doctorServiceImpl, SpecialtyServiceImpl specialtyServiceImpl) {
+    public DoctorRESTController(DoctorServiceImpl doctorServiceImpl) {
         this.doctorServiceImpl = doctorServiceImpl;
-        this.specialtyServiceImpl = specialtyServiceImpl;
     }
 
     @GetMapping()
@@ -51,7 +49,6 @@ public class DoctorRESTController {
             }
             throw new NotCreatedException(errorMessage.toString());
         }
-        doctorDTO.setSpecialtyId(specialtyServiceImpl.findById(doctorDTO.getSpecialtyId()).getId());
         doctorServiceImpl.save(doctorDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

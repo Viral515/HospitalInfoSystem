@@ -20,12 +20,10 @@ import java.util.List;
 public class CommentaryRESTController {
 
     private final CommentaryServiceImpl commentaryServiceImpl;
-    private final DoctorServiceImpl doctorServiceImpl;
 
     @Autowired
-    public CommentaryRESTController(CommentaryServiceImpl commentaryServiceImpl, DoctorServiceImpl doctorServiceImpl) {
+    public CommentaryRESTController(CommentaryServiceImpl commentaryServiceImpl) {
         this.commentaryServiceImpl = commentaryServiceImpl;
-        this.doctorServiceImpl = doctorServiceImpl;
     }
 
     @GetMapping()
@@ -52,7 +50,6 @@ public class CommentaryRESTController {
             }
             throw new NotCreatedException(errorMessage.toString());
         }
-        commentaryDTO.setDoctorId(doctorServiceImpl.findById(commentaryDTO.getDoctorId()).getId());
         commentaryServiceImpl.save(commentaryDTO);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }

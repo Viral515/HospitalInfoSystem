@@ -8,8 +8,7 @@ import ru.egarcourses.HospitalInfoSystem.models.Commentary;
 import ru.egarcourses.HospitalInfoSystem.repositories.CommentaryRepository;
 import ru.egarcourses.HospitalInfoSystem.services.CommentaryService;
 import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundException;
 import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     public List<CommentaryDTO> findAll() {
         List<Commentary> commentaryList = commentaryRepository.findAll();
         if (commentaryList.isEmpty()) {
-            throw new NotFoundedException("Commentaries not founded");
+            throw new NotFoundException("Commentaries not found");
         }
         return commentaryList.stream().map(mappingUtils::mapToCommentaryDTO).collect(Collectors.toList());
     }
@@ -42,7 +41,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     public CommentaryDTO findById(int id) {
         Optional<Commentary> foundCommentary = commentaryRepository.findById(id);
         if (!foundCommentary.isPresent()) {
-            throw new NotFoundedException("Commentary not founded");
+            throw new NotFoundException("Commentary not found");
         }
         return mappingUtils.mapToCommentaryDTO(foundCommentary.get());
     }
@@ -51,9 +50,6 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Override
     public void save(CommentaryDTO commentaryDTO) {
         commentaryRepository.save(mappingUtils.mapToCommentary(commentaryDTO));
-        if (!commentaryRepository.findById(commentaryDTO.getId()).isPresent()) {
-            throw new NotCreatedException("Comment not created");
-        }
     }
 
     @Transactional
@@ -71,7 +67,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Override
     public void delete(int id) {
         if (!commentaryRepository.findById(id).isPresent()) {
-            throw new NotFoundedException("Comment not founded");
+            throw new NotFoundException("Comment not found");
         }
         commentaryRepository.deleteById(id);
     }

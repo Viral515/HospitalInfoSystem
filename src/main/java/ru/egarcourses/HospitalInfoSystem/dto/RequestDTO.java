@@ -1,5 +1,8 @@
 package ru.egarcourses.HospitalInfoSystem.dto;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Future;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -7,6 +10,8 @@ import java.time.LocalDate;
 
 public class RequestDTO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private int patientId;
