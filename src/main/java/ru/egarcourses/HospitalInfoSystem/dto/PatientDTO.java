@@ -1,5 +1,9 @@
 package ru.egarcourses.HospitalInfoSystem.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -8,6 +12,8 @@ import org.hibernate.validator.constraints.Range;
 
 public class PatientDTO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotNull(message = "Full name should not be empty.")
@@ -29,6 +35,16 @@ public class PatientDTO {
     @Size(min=11, max = 11, message = "The insurance phone number must be 11 characters long.")
     @Digits(integer = 11, fraction = 0, message = "The score must be a number")
     private String phoneNumber;
+
+    public PatientDTO() {
+    }
+
+    public PatientDTO(String fullName, int age, String policyNumber, String phoneNumber) {
+        this.fullName = fullName;
+        this.age = age;
+        this.policyNumber = policyNumber;
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getFullName() {
         return fullName;

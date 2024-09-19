@@ -9,7 +9,7 @@ import ru.egarcourses.HospitalInfoSystem.repositories.PatientRepository;
 import ru.egarcourses.HospitalInfoSystem.services.PatientService;
 import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
 import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundException;
 import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
     public List<PatientDTO> findAll() {
         List<Patient> patients = patientRepository.findAll();
         if (patients.isEmpty()) {
-            throw new NotFoundedException("Patients not founded");
+            throw new NotFoundException("Patients not found");
         }
         return patientRepository.findAll().stream().map(mappingUtils::mapToPatientDTO).collect(Collectors.toList());
     }
@@ -42,7 +42,7 @@ public class PatientServiceImpl implements PatientService {
     public PatientDTO findById(int id) {
         Optional<Patient> foundPatient =  patientRepository.findById(id);
         if(!foundPatient.isPresent()) {
-            throw new NotFoundedException("Patient not founded");
+            throw new NotFoundException("Patient not found");
         }
         return mappingUtils.mapToPatientDTO(foundPatient.get());
     }
@@ -51,9 +51,6 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void save(PatientDTO patientDTO) {
         patientRepository.save(mappingUtils.mapToPatient(patientDTO));
-        if(!patientRepository.findById(patientDTO.getId()).isPresent()) {
-            throw new NotCreatedException("Patient not created");
-        }
     }
 
     @Transactional
@@ -71,7 +68,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void delete(int id) {
         if(!patientRepository.findById(id).isPresent()) {
-            throw new NotFoundedException("Patient not founded");
+            throw new NotFoundException("Patient not found");
         }
         patientRepository.deleteById(id);
     }

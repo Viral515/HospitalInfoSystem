@@ -10,8 +10,8 @@ import ru.egarcourses.HospitalInfoSystem.util.exceptions.*;
 @RestControllerAdvice
 public class ExceptionApiHandler {
 
-    @ExceptionHandler(NotFoundedException.class)
-    public ResponseEntity<ErrorMessage> handleNotFoundedException(NotFoundedException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleNotFoundedException(NotFoundException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ErrorMessage(e.getMessage()));

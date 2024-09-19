@@ -15,6 +15,7 @@ import ru.egarcourses.HospitalInfoSystem.services.impl.RequestServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
 import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -22,18 +23,14 @@ import java.util.List;
 public class RequestRESTController {
 
     private final RequestServiceImpl requestServiceImpl;
-    private final PatientServiceImpl patientServiceImpl;
-    private final DoctorServiceImpl doctorServiceImpl;
 
     @Autowired
-    public RequestRESTController(RequestServiceImpl requestServiceImpl, PatientServiceImpl patientServiceImpl, DoctorServiceImpl doctorServiceImpl) {
+    public RequestRESTController(RequestServiceImpl requestServiceImpl) {
         this.requestServiceImpl = requestServiceImpl;
-        this.patientServiceImpl = patientServiceImpl;
-        this.doctorServiceImpl = doctorServiceImpl;
     }
 
     @GetMapping()
-    public ResponseEntity<List<RequestDTO>> index(Model model){
+    public ResponseEntity<List<RequestDTO>> index(){
         final List<RequestDTO> requests = requestServiceImpl.findAll();
         return ResponseEntity.ok(requests);
     }
@@ -56,8 +53,6 @@ public class RequestRESTController {
             }
             throw new NotCreatedException(errorMessage.toString());
         }
-        requestDTO.setDoctorId(doctorServiceImpl.findById(requestDTO.getDoctorId()).getId());
-        requestDTO.setPatientId(patientServiceImpl.findById(requestDTO.getPatientId()).getId());
         requestServiceImpl.save(requestDTO);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }

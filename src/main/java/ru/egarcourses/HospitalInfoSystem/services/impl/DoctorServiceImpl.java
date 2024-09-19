@@ -9,7 +9,7 @@ import ru.egarcourses.HospitalInfoSystem.repositories.DoctorRepository;
 import ru.egarcourses.HospitalInfoSystem.services.DoctorService;
 import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
 import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundedException;
+import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundException;
 import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class DoctorServiceImpl implements DoctorService {
     public List<DoctorDTO> findAll() {
         List<Doctor> doctors = doctorRepository.findAll();
         if (doctors.isEmpty()) {
-            throw new NotFoundedException("Doctors not founded");
+            throw new NotFoundException("Doctors not founded");
         }
         return doctorRepository.findAll().stream().map(mappingUtils::mapToDoctorDTO).collect(Collectors.toList());
     }
@@ -42,7 +42,7 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorDTO findById(int id) {
         Optional<Doctor> doctor = doctorRepository.findById(id);
         if (!doctor.isPresent()) {
-            throw new NotFoundedException("Doctor not found");
+            throw new NotFoundException("Doctor not found");
         }
         return mappingUtils.mapToDoctorDTO(doctor.get());
     }
@@ -51,9 +51,6 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void save(DoctorDTO doctorDTO) {
         doctorRepository.save(mappingUtils.mapToDoctor(doctorDTO));
-        if (!doctorRepository.findById(doctorDTO.getId()).isPresent()) {
-            throw new NotCreatedException("Doctor not created");
-        }
     }
 
     @Transactional
@@ -71,7 +68,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void delete(int id) {
         if (!doctorRepository.findById(id).isPresent()) {
-            throw new NotFoundedException("Doctor not found");
+            throw new NotFoundException("Doctor not found");
         }
         doctorRepository.deleteById(id);
     }
