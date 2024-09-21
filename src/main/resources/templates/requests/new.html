@@ -8,8 +8,8 @@
 
 <form th:method="POST" th:action="@{/requests}" th:object="${request}">
     <label for="patient">Select patient:</label>
-    <select th:object="${patient}" th:field="*{patientId}" id="patient">
-        <option th:each="patient : ${patients}" th:value="${patient.getPatientId()}" th:text="${patient.getFullName()}">
+    <select th:object="${patient}" th:field="*{id}" id="patient">
+        <option th:each="patient : ${patients}" th:value="${patient.getId()}" th:text="${patient.getFullName()}">
         </option>
     </select>
     <br>

@@ -8,11 +8,11 @@ public interface CommentaryService {
 
     public List<CommentaryDTO> findAll();
 
-    public CommentaryDTO findById(int id);
+    public CommentaryDTO findById(Long id);
 
     public void save(CommentaryDTO commentaryDTO);
 
-    public void update(int id, CommentaryDTO updatedCommentaryDTO);
+    public void update(Long id, CommentaryDTO updatedCommentaryDTO);
 
-    public void delete(int id);
+    public void delete(Long id);
 }

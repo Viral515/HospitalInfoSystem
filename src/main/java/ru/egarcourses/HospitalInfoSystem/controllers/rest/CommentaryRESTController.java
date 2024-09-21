@@ -9,9 +9,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.CommentaryDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.CommentaryServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 
@@ -27,21 +26,21 @@ public class CommentaryRESTController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<CommentaryDTO>> index(){
-        final List<CommentaryDTO> commentaries =  commentaryServiceImpl.findAll();
+    public ResponseEntity<List<CommentaryDTO>> index() {
+        final List<CommentaryDTO> commentaries = commentaryServiceImpl.findAll();
         return ResponseEntity.ok(commentaries);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentaryDTO> show(@PathVariable("id") int id){
+    public ResponseEntity<CommentaryDTO> show(@PathVariable("id") Long id) {
         final CommentaryDTO commentaryDTO = commentaryServiceImpl.findById(id);
         return ResponseEntity.ok(commentaryDTO);
     }
 
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody @Valid CommentaryDTO commentaryDTO,
-                                                BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+                                    BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
@@ -56,8 +55,8 @@ public class CommentaryRESTController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody @Valid CommentaryDTO commentaryDTO, BindingResult bindingResult,
-                         @PathVariable("id") int id){
-        if(bindingResult.hasErrors()){
+                                    @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
@@ -71,7 +70,7 @@ public class CommentaryRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") int id){
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         commentaryServiceImpl.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

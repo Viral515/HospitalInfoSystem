@@ -16,8 +16,8 @@
     <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
     <br/>
     <label for="doctor">Select doctor:</label>
-    <select th:object="${doctorDTO}" th:field="*{id}" id="doctor">
-        <option th:each="doctorDTO : ${doctorsDTO}" th:value="${doctorDTO.getId()}"
+    <select th:object="${commentaryDTO}" th:field="*{doctor}" id="doctor">
+        <option th:each="doctorDTO : ${doctorsDTO}" th:value="${doctorDTO}"
                 th:text="${doctorDTO.getFullName()}">
         </option>
     </select>

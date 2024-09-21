@@ -22,20 +22,21 @@ public class RequestController {
     private final DoctorServiceImpl doctorServiceImpl;
 
     @Autowired
-    public RequestController(RequestServiceImpl requestServiceImpl, PatientServiceImpl patientServiceImpl, DoctorServiceImpl doctorServiceImpl) {
+    public RequestController(RequestServiceImpl requestServiceImpl, PatientServiceImpl patientServiceImpl,
+                             DoctorServiceImpl doctorServiceImpl) {
         this.requestServiceImpl = requestServiceImpl;
         this.patientServiceImpl = patientServiceImpl;
         this.doctorServiceImpl = doctorServiceImpl;
     }
 
     @GetMapping()
-    public String index(Model model){
+    public String index(Model model) {
         model.addAttribute("requests", requestServiceImpl.findAll());
         return "requests/index";
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("request", requestServiceImpl.findById(id));
         return "requests/show";
     }
@@ -43,7 +44,7 @@ public class RequestController {
     @GetMapping("/new")
     public String newRequests(@ModelAttribute("request") RequestDTO requestDTO, Model model,
                               @ModelAttribute("patient") PatientDTO patientDTO,
-                              @ModelAttribute("doctor") DoctorDTO doctorDTO){
+                              @ModelAttribute("doctor") DoctorDTO doctorDTO) {
         model.addAttribute("patients", patientServiceImpl.findAll());
         model.addAttribute("doctors", doctorServiceImpl.findAll());
         return "requests/new";
@@ -52,37 +53,43 @@ public class RequestController {
     @PostMapping()
     public String create(@ModelAttribute("request") @Valid RequestDTO requestDTO, BindingResult bindingResult,
                          @ModelAttribute("patient") PatientDTO patientDTO,
-                         @ModelAttribute("doctor") DoctorDTO doctorDTO, Model model){
-        if(bindingResult.hasErrors()){
+                         @ModelAttribute("doctor") DoctorDTO doctorDTO, Model model) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("patients", patientServiceImpl.findAll());
             model.addAttribute("doctors", doctorServiceImpl.findAll());
             return "requests/new";
         }
-        requestDTO.setPatientId(patientDTO.getId());
-        requestDTO.setDoctorId(doctorDTO.getId());
+        requestDTO.setPatient(patientDTO);
+        requestDTO.setDoctor(doctorDTO);
         requestServiceImpl.save(requestDTO);
         return "redirect:/requests";
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id){
+    public String edit(Model model, @PathVariable("id") Long id) {
         model.addAttribute("request", requestServiceImpl.findById(id));
+        model.addAttribute("requestPatient", requestServiceImpl.findById(id).getPatient().getFullName());
+        model.addAttribute("requestDoctor", requestServiceImpl.findById(id).getDoctor());
         return "requests/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("request") @Valid RequestDTO requestDTO, BindingResult bindingResult,
-                         @PathVariable("id") int id){
-        if(bindingResult.hasErrors()){
+                         @PathVariable("id") Long id, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("requestPatient", requestServiceImpl.findById(id).getPatient().getFullName());
+            model.addAttribute("requestDoctor", requestServiceImpl.findById(id).getDoctor());
             return "requests/edit";
         }
 
+        requestDTO.setPatient(patientServiceImpl.findById(requestDTO.getPatient().getId()));
+        requestDTO.setDoctor(doctorServiceImpl.findById(requestDTO.getDoctor().getId()));
         requestServiceImpl.update(id, requestDTO);
         return "redirect:/requests";
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") Long id) {
         requestServiceImpl.delete(id);
         return "redirect:/requests";
     }

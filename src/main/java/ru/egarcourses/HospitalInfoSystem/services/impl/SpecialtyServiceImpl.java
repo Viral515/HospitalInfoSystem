@@ -7,10 +7,9 @@ import ru.egarcourses.HospitalInfoSystem.dto.SpecialtyDTO;
 import ru.egarcourses.HospitalInfoSystem.models.Specialty;
 import ru.egarcourses.HospitalInfoSystem.repositories.SpecialtyRepository;
 import ru.egarcourses.HospitalInfoSystem.services.SpecialtyService;
-import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +38,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public SpecialtyDTO findById(int id) {
+    public SpecialtyDTO findById(Long id) {
         Optional<Specialty> specialty = specialtyRepository.findById(id);
         if (!specialty.isPresent()) {
             throw new NotFoundException("Specialty not found");
@@ -55,18 +54,18 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Transactional
     @Override
-    public void update(int id, SpecialtyDTO updatedSpecialtyDTO) {
+    public void update(Long id, SpecialtyDTO updatedSpecialtyDTO) {
         Specialty updatedSpecialty = mappingUtils.mapToSpecialty(updatedSpecialtyDTO);
         updatedSpecialty.setId(id);
         specialtyRepository.save(updatedSpecialty);
-        if (!specialtyRepository.findById(id).equals(updatedSpecialty)) {
+        if (specialtyRepository.findById(id).equals(updatedSpecialty)) {
             throw new NotUpdatedException("Specialty not updated");
         }
     }
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         if (!specialtyRepository.findById(id).isPresent()) {
             throw new NotFoundException("Specialty not found");
         }

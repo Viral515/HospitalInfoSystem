@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.egarcourses.HospitalInfoSystem.models.Commentary;
 
 @Repository
-public interface CommentaryRepository extends JpaRepository<Commentary, Integer> {
+public interface CommentaryRepository extends JpaRepository<Commentary, Long> {
 }

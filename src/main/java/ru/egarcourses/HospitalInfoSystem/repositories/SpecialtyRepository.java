@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.egarcourses.HospitalInfoSystem.models.Specialty;
 
 @Repository
-public interface SpecialtyRepository extends JpaRepository<Specialty, Integer> {
+public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
     Specialty findByName(String name);
 }

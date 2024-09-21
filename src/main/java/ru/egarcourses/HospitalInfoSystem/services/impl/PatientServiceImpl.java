@@ -7,10 +7,9 @@ import ru.egarcourses.HospitalInfoSystem.dto.PatientDTO;
 import ru.egarcourses.HospitalInfoSystem.models.Patient;
 import ru.egarcourses.HospitalInfoSystem.repositories.PatientRepository;
 import ru.egarcourses.HospitalInfoSystem.services.PatientService;
-import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +38,9 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDTO findById(int id) {
-        Optional<Patient> foundPatient =  patientRepository.findById(id);
-        if(!foundPatient.isPresent()) {
+    public PatientDTO findById(Long id) {
+        Optional<Patient> foundPatient = patientRepository.findById(id);
+        if (!foundPatient.isPresent()) {
             throw new NotFoundException("Patient not found");
         }
         return mappingUtils.mapToPatientDTO(foundPatient.get());
@@ -55,19 +54,19 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public void update(int id, PatientDTO updatedPatientDTO) {
+    public void update(Long id, PatientDTO updatedPatientDTO) {
         Patient updatedPatient = mappingUtils.mapToPatient(updatedPatientDTO);
         updatedPatient.setPatientId(id);
         patientRepository.save(updatedPatient);
-        if (!patientRepository.findById(id).equals(updatedPatient)) {
+        if (patientRepository.findById(id).equals(updatedPatient)) {
             throw new NotUpdatedException("Patient not updated");
         }
     }
 
     @Transactional
     @Override
-    public void delete(int id) {
-        if(!patientRepository.findById(id).isPresent()) {
+    public void delete(Long id) {
+        if (!patientRepository.findById(id).isPresent()) {
             throw new NotFoundException("Patient not found");
         }
         patientRepository.deleteById(id);

@@ -10,7 +10,7 @@
 
 <p th:text="${'Doctor: ' + doctor.getFullName()}">VALUE</p>
 <p th:text="${'Cabinet: ' + doctor.getCabinet()}">VALUE</p>
-<p th:text="${'Specialty: ' + doctor.getSpecialty()}">VALUE</p>
+<p th:text="${'Specialty: ' + doctor.getSpecialty().getName()}">VALUE</p>
 
 <a th:href="@{/doctors/{id}/edit(id=${doctor.getId()})}">Edit</a>
 

@@ -21,25 +21,25 @@ public class PatientController {
     }
 
     @GetMapping()
-    public String index(Model model){
+    public String index(Model model) {
         model.addAttribute("patients", patientServiceImpl.findAll());
         return "patients/index";
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("patient", patientServiceImpl.findById(id));
         return "patients/show";
     }
 
     @GetMapping("/new")
-    public String newPatient(@ModelAttribute("patient") PatientDTO patientDTO){
+    public String newPatient(@ModelAttribute("patient") PatientDTO patientDTO) {
         return "patients/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("patient") @Valid PatientDTO patientDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String create(@ModelAttribute("patient") @Valid PatientDTO patientDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "patients/new";
         }
 
@@ -48,15 +48,15 @@ public class PatientController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id){
+    public String edit(Model model, @PathVariable("id") Long id) {
         model.addAttribute("patient", patientServiceImpl.findById(id));
         return "patients/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("patient") @Valid PatientDTO patientDTO, BindingResult bindingResult,
-                         @PathVariable("id") int id){
-        if(bindingResult.hasErrors()){
+                         @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
             return "patients/edit";
         }
 
@@ -65,7 +65,7 @@ public class PatientController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") Long id) {
         patientServiceImpl.delete(id);
         return "redirect:/patients";
     }
