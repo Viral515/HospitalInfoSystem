@@ -55,19 +55,11 @@ public class CommentaryController {
     public String create(@ModelAttribute("commentaryDTO") @Valid CommentaryDTO commentaryDTO, BindingResult bindingResult,
                          @ModelAttribute("doctorDTO") DoctorDTO doctorDTO, Model model) {
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessage = new StringBuilder();
-            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-            for (FieldError fieldError : fieldErrors) {
-                errorMessage.append(fieldError.getField()).append(" - ")
-                        .append(fieldError.getDefaultMessage()).append(";");
-            }
-            throw new NotCreatedException(errorMessage.toString());
-
-//            model.addAttribute("doctorsDTO", doctorServiceImpl.findAll());
-//            return "commentaries/new";
+            model.addAttribute("doctorsDTO", doctorServiceImpl.findAll());
+            return "commentaries/new";
         }
         commentaryDTO.setDoctor(doctorDTO);
-        System.out.println(commentaryDTO.getId());
+        commentaryDTO.setId(0L);
         commentaryServiceImpl.save(commentaryDTO);
         return "redirect:/commentaries";
     }

@@ -18,8 +18,6 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class RequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private PatientDTO patient;

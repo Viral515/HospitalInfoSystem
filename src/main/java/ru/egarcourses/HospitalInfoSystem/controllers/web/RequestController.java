@@ -61,6 +61,7 @@ public class RequestController {
         }
         requestDTO.setPatient(patientDTO);
         requestDTO.setDoctor(doctorDTO);
+        requestDTO.setId(0L);
         requestServiceImpl.save(requestDTO);
         return "redirect:/requests";
     }
@@ -82,7 +83,7 @@ public class RequestController {
             return "requests/edit";
         }
 
-        requestDTO.setPatient(patientServiceImpl.findById(requestDTO.getPatient().getId()));
+        requestDTO.setPatient(patientServiceImpl.findById(requestDTO.getPatient().getPatientId()));
         requestDTO.setDoctor(doctorServiceImpl.findById(requestDTO.getDoctor().getId()));
         requestServiceImpl.update(id, requestDTO);
         return "redirect:/requests";

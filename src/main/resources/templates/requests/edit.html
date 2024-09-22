@@ -8,7 +8,7 @@
 
 <form th:method="PATCH" th:action="@{/requests/{id}(id=${request.getId()})}" th:object="${request}">
     <label for="patient" th:text="'Patient: ' + ${requestPatient}">value</label>
-    <input type="hidden" th:field="*{patient.id}" id="patient" th:value="${request.getPatient().getId()}"/>
+    <input type="hidden" th:field="*{patient.patientId}" id="patient" th:value="${request.getPatient().getPatientId()}"/>
     <br/>
     <label for="doctor" th:text="'Doctor: ' + ${requestDoctor.getFullName()}
         + ', ' + ${requestDoctor.getSpecialty().getName()}">value</label>

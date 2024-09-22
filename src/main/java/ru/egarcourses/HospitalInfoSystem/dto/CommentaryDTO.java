@@ -15,8 +15,6 @@ import org.hibernate.validator.constraints.Range;
 @EqualsAndHashCode
 public class CommentaryDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Range(min = 1, max = 5, message = "The score must be a number from 1 to 5")

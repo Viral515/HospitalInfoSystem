@@ -19,9 +19,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class PatientDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long patientId;
 
     @NotNull(message = "Full name should not be empty.")
     @Size(min = 5, max = 30, message = "Full name should be between 5 and 30 symbols.")

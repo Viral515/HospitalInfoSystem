@@ -7,16 +7,16 @@
 <body>
 <!--поле показывающее id для удобной отладки-->
 
-<p th:text="${patient.getId()}">VALUE</p>
+<p th:text="${patient.getPatientId()}">VALUE</p>
 
 <p th:text="${'Patient: ' + patient.getFullName()}">VALUE</p>
 <p th:text="${'Patient age: ' + patient.getAge()}">VALUE</p>
 <p th:text="${'Policy number: ' + patient.getPolicyNumber()}">VALUE</p>
 <p th:text="${'Phone number: ' + patient.getPhoneNumber()}">VALUE</p>
 
-<a th:href="@{/patients/{id}/edit(id=${patient.getId()})}">Edit</a>
+<a th:href="@{/patients/{id}/edit(id=${patient.getPatientId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/patients/{id}(id=${patient.getId()})}">
+<form th:method="DELETE" th:action="@{/patients/{id}(id=${patient.getPatientId()})}">
     <input type="submit" value="Delete"/>
 </form>
 

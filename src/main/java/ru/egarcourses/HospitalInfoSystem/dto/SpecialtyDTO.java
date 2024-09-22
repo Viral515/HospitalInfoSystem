@@ -16,8 +16,6 @@ import lombok.*;
 @EqualsAndHashCode
 public class SpecialtyDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull(message = "Specialty name should not be empty.")

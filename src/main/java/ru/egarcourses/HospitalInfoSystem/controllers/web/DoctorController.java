@@ -51,6 +51,7 @@ public class DoctorController {
             return "doctors/new";
         }
         doctorDTO.setSpecialty(specialtyDTO);
+        doctorDTO.setId(0L);
         doctorServiceImpl.save(doctorDTO);
         return "redirect:/doctors";
     }

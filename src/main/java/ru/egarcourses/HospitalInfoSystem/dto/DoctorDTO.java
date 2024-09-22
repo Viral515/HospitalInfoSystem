@@ -16,8 +16,6 @@ import lombok.*;
 @EqualsAndHashCode
 public class DoctorDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Pattern(regexp = "^[a-zA-Z\\s]+$")
