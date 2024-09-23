@@ -34,7 +34,7 @@ public class PatientServiceImpl implements PatientService {
         if (patients.isEmpty()) {
             throw new NotFoundException("Patients not found");
         }
-        return patientRepository.findAll().stream().map(mappingUtils::mapToPatientDTO).collect(Collectors.toList());
+        return patients.stream().map(mappingUtils::mapToPatientDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -55,12 +55,12 @@ public class PatientServiceImpl implements PatientService {
     @Transactional
     @Override
     public void update(Long id, PatientDTO updatedPatientDTO) {
+        if (!patientRepository.findById(id).isPresent()) {
+            throw new NotFoundException("Patient not found");
+        }
         Patient updatedPatient = mappingUtils.mapToPatient(updatedPatientDTO);
         updatedPatient.setPatientId(id);
         patientRepository.save(updatedPatient);
-        if (patientRepository.findById(id).equals(updatedPatient)) {
-            throw new NotUpdatedException("Patient not updated");
-        }
     }
 
     @Transactional

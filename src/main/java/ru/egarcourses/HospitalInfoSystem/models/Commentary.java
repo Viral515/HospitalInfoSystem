@@ -1,7 +1,6 @@
 package ru.egarcourses.HospitalInfoSystem.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;

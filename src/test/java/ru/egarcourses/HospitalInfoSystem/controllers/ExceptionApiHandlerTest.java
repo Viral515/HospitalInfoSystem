@@ -2,9 +2,11 @@ package ru.egarcourses.HospitalInfoSystem.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.egarcourses.HospitalInfoSystem.models.ErrorMessage;
@@ -15,6 +17,7 @@ import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class ExceptionApiHandlerTest {
     @Mock
     private NotFoundException notFoundException;
@@ -28,10 +31,10 @@ public class ExceptionApiHandlerTest {
     @InjectMocks
     private ExceptionApiHandler exceptionApiHandler;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+//    @BeforeEach
+//    public void setUp() {
+//        MockitoAnnotations.initMocks(this);
+//    }
 
     @Test
     public void testHandleNotFoundedException() {

@@ -34,7 +34,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         if (specialties.isEmpty()) {
             throw new NotFoundException("Specialties are not found");
         }
-        return specialtyRepository.findAll().stream().map(mappingUtils::mapToSpecialtyDTO).collect(Collectors.toList());
+        return specialties.stream().map(mappingUtils::mapToSpecialtyDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -55,12 +55,12 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     @Transactional
     @Override
     public void update(Long id, SpecialtyDTO updatedSpecialtyDTO) {
+        if (!specialtyRepository.findById(id).isPresent()) {
+            throw new NotFoundException("Specialty not found");
+        }
         Specialty updatedSpecialty = mappingUtils.mapToSpecialty(updatedSpecialtyDTO);
         updatedSpecialty.setId(id);
         specialtyRepository.save(updatedSpecialty);
-        if (specialtyRepository.findById(id).equals(updatedSpecialty)) {
-            throw new NotUpdatedException("Specialty not updated");
-        }
     }
 
     @Transactional

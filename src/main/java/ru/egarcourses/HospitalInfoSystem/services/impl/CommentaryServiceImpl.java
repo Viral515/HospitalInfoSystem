@@ -49,19 +49,18 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Transactional
     @Override
     public void save(CommentaryDTO commentaryDTO) {
-//        commentaryDTO.setId(0L);
         commentaryRepository.save(mappingUtils.mapToCommentary(commentaryDTO));
     }
 
     @Transactional
     @Override
     public void update(Long id, CommentaryDTO updatedCommentaryDTO) {
+        if (!commentaryRepository.findById(id).isPresent()) {
+            throw new NotFoundException("Comment not found");
+        }
         Commentary updatedCommentary = mappingUtils.mapToCommentary(updatedCommentaryDTO);
         updatedCommentary.setId(id);
         commentaryRepository.save(updatedCommentary);
-        if (commentaryRepository.findById(id).equals(updatedCommentary)) {
-            throw new NotUpdatedException("Comment not updated");
-        }
     }
 
     @Transactional
