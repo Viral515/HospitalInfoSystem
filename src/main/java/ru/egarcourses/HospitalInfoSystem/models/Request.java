@@ -9,20 +9,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- *
+ * Класс, описывающий сущность записи на приём
  */
 @Entity
 @Table(name = "Request")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class Request {
 
     /**
-     *
+     * Поле уникального идентификатора записи на приём
      */
     @Id
     @Column(name = "id")
@@ -30,21 +27,21 @@ public class Request {
     private Long id;
 
     /**
-     *
+     * Поле пациента, записавшегося на приём
      */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
     /**
-     *
+     * Поле доктора, к которому производится запись на приём
      */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
     /**
-     *
+     * Поле желаемой даты приёма
      */
     @Column(name = "desired_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -52,7 +49,7 @@ public class Request {
     private LocalDate desiredDate;
 
     /**
-     *
+     * Поле утверждённой даты и времени приёма
      */
     @Column(name = "approved_date")
     private LocalDateTime approvedDate;

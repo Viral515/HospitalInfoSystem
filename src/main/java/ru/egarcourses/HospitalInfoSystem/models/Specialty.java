@@ -13,12 +13,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "Specialty")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class Specialty {
 
     /**
@@ -39,7 +36,7 @@ public class Specialty {
     private String name;
 
     /**
-     * Список докторов, обладающих данной специальностью
+     * Поле списка докторов, обладающих данной специальностью
      */
     @OneToMany(mappedBy = "specialty")
     private List<Doctor> doctors;

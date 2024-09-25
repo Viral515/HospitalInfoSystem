@@ -2,14 +2,17 @@ package ru.egarcourses.HospitalInfoSystem.models;
 
 import lombok.*;
 
-@Getter
-@Setter
+/**
+ * Класс сообщения об ошибке
+ */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class ErrorMessage {
 
+    /**
+     * Поле с информацией об ошибке
+     */
     private String message;
 
 }

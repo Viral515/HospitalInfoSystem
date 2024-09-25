@@ -7,24 +7,38 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
-@Getter
-@Setter
+/**
+ * Класс, описывающий DTO записи на приём
+ */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class RequestDTO {
 
+    /**
+     * Поле уникального идентификатора DTO записи на приём
+     */
     private Long id;
 
+    /**
+     * Поле DTO пациента, записанного на приём
+     */
     private PatientDTO patient;
 
+    /**
+     * Поле DTO доктора, к которому производится запись
+     */
     private DoctorDTO doctor;
 
+    /**
+     * Поле желаемой даты приёма
+     */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Future
     private LocalDate desiredDate;
 
+    /**
+     * Поле утверждённой даты и времени приёма
+     */
     private LocalDateTime approvedDate;
 }

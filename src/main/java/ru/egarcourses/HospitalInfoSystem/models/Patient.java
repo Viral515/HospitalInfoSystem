@@ -11,20 +11,17 @@ import org.hibernate.validator.constraints.Range;
 import java.util.List;
 
 /**
- *
+ * Класс, описывающий сущность пациента
  */
 @Entity
 @Table(name = "Patient")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class Patient {
 
     /**
-     *
+     * Поле уникального идентификатора пациента
      */
     @Id
     @Column(name = "id")
@@ -32,7 +29,7 @@ public class Patient {
     private Long patientId;
 
     /**
-     *
+     * Поле полного имени и фамилии пациента
      */
     @NotNull(message = "Full name should not be empty.")
     @Size(min = 5, max = 30, message = "Full name should be between 5 and 30 symbols.")
@@ -41,7 +38,7 @@ public class Patient {
     private String fullName;
 
     /**
-     *
+     * Поле возраста пациента
      */
     @NotNull(message = "Age should be greater than 0.")
     @Column(name = "age")
@@ -50,7 +47,7 @@ public class Patient {
     private int age;
 
     /**
-     *
+     * Поле страхового полиса пациента
      */
     @NotNull(message = "Policy number should not be empty")
     @Size(min = 11, max = 11, message = "The insurance policy number must be 11 characters long.")
@@ -59,7 +56,7 @@ public class Patient {
     private String policyNumber;
 
     /**
-     *
+     * Поле номера телефона пациента
      */
     @NotNull(message = "Phone number should not be empty")
     @Size(min = 11, max = 11, message = "The insurance phone number must be 11 characters long.")
@@ -68,7 +65,7 @@ public class Patient {
     private String phoneNumber;
 
     /**
-     *
+     * Поле списка записей на приём, оформленные пациентом
      */
     @OneToMany(mappedBy = "patient")
     private List<Request> requests;

@@ -24,7 +24,7 @@ CREATE TABLE Doctor
     id           BIGINT PRIMARY KEY AUTO_INCREMENT,
     full_name    varchar(30) NOT NULL,
     cabinet      varchar(3)  NOT NULL,
-    specialty_id BIGINT         REFERENCES Specialty (id) ON DELETE SET NULL
+    specialty_id BIGINT         REFERENCES Specialty (id) ON DELETE CASCADE
 );
 
 CREATE TABLE Request
@@ -39,7 +39,7 @@ CREATE TABLE Request
 CREATE TABLE Commentary
 (
     id          BIGINT PRIMARY KEY AUTO_INCREMENT,
-    doctor_id   BIGINT REFERENCES Doctor (id) ON DELETE SET NULL,
+    doctor_id   BIGINT REFERENCES Doctor (id) ON DELETE CASCADE ,
     score       int NOT NULL,
     description varchar(200)
 );
