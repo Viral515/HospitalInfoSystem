@@ -30,8 +30,8 @@ CREATE TABLE Doctor
 CREATE TABLE Request
 (
     id            BIGINT PRIMARY KEY AUTO_INCREMENT,
-    patient_id    BIGINT  REFERENCES Patient (id) ON DELETE SET NULL,
-    doctor_id     BIGINT  REFERENCES Doctor (id) ON DELETE SET NULL,
+    patient_id    BIGINT  REFERENCES Patient (id) ON DELETE CASCADE ,
+    doctor_id     BIGINT  REFERENCES Doctor (id) ON DELETE CASCADE ,
     desired_date  DATE NOT NULL,
     approved_date TIMESTAMP
 );
