@@ -9,9 +9,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.DoctorDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.services.impl.SpecialtyServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 
@@ -27,20 +26,20 @@ public class DoctorRESTController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<DoctorDTO>> index(){
+    public ResponseEntity<List<DoctorDTO>> index() {
         final List<DoctorDTO> doctors = doctorServiceImpl.findAll();
         return ResponseEntity.ok(doctors);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DoctorDTO> show(@PathVariable("id") int id){
+    public ResponseEntity<DoctorDTO> show(@PathVariable("id") Long id) {
         final DoctorDTO doctorDTO = doctorServiceImpl.findById(id);
         return ResponseEntity.ok(doctorDTO);
     }
 
     @PostMapping()
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid DoctorDTO doctorDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid DoctorDTO doctorDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
@@ -56,8 +55,8 @@ public class DoctorRESTController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<HttpStatus> update(@RequestBody @Valid DoctorDTO doctorDTO, BindingResult bindingResult,
-                         @PathVariable("id") int id){
-        if(bindingResult.hasErrors()){
+                                             @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
@@ -71,7 +70,7 @@ public class DoctorRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id){
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Long id) {
         doctorServiceImpl.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

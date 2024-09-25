@@ -8,11 +8,11 @@ public interface PatientService {
 
     public List<PatientDTO> findAll();
 
-    public PatientDTO findById(int id);
+    public PatientDTO findById(Long id);
 
     public void save(PatientDTO patient);
 
-    public void update(int id, PatientDTO updatedPatientDTO);
+    public void update(Long id, PatientDTO updatedPatientDTO);
 
-    public void delete(int id);
+    public void delete(Long id);
 }

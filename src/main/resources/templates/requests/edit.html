@@ -7,12 +7,12 @@
 <body>
 
 <form th:method="PATCH" th:action="@{/requests/{id}(id=${request.getId()})}" th:object="${request}">
-    <label for="patient" th:text="'Patient: ' + ${request.getPatient().getFullName()}">value</label>
-    <input type="hidden" th:field="*{patient}" id="patient" th:value="${request.getPatient().getPatientId()}"/>
+    <label for="patient" th:text="'Patient: ' + ${requestPatient}">value</label>
+    <input type="hidden" th:field="*{patient.patientId}" id="patient" th:value="${request.getPatient().getPatientId()}"/>
     <br/>
-    <label for="doctor" th:text="'Doctor: ' + ${request.getDoctor().getFullName()}
-        + ', ' + ${request.getDoctor().getSpecialty().getName()}">value</label>
-    <input type="hidden" th:field="*{doctor}" id="doctor" th:value="${request.getDoctor().getId()}"/>
+    <label for="doctor" th:text="'Doctor: ' + ${requestDoctor.getFullName()}
+        + ', ' + ${requestDoctor.getSpecialty().getName()}">value</label>
+    <input type="hidden" th:field="*{doctor.id}" id="doctor" th:value="${request.getDoctor().getId()}"/>
     <br/>
     <label for="desiredDate">Enter desired date: </label>
     <input type="date" th:field="*{desiredDate}" id="desiredDate"/>

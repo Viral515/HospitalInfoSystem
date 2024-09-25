@@ -1,4 +1,4 @@
-package ru.egarcourses.HospitalInfoSystem.util;
+package ru.egarcourses.HospitalInfoSystem.utils;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class MappingUtils {
         return modelMapper.map(commentary, CommentaryDTO.class);
     }
 
-    public Commentary mapToCommentary (CommentaryDTO commentaryDTO) {
+    public Commentary mapToCommentary(CommentaryDTO commentaryDTO) {
         return modelMapper.map(commentaryDTO, Commentary.class);
     }
 
@@ -22,7 +22,7 @@ public class MappingUtils {
         return modelMapper.map(doctor, DoctorDTO.class);
     }
 
-    public Doctor mapToDoctor (DoctorDTO doctorDTO) {
+    public Doctor mapToDoctor(DoctorDTO doctorDTO) {
         return modelMapper.map(doctorDTO, Doctor.class);
     }
 
@@ -38,7 +38,7 @@ public class MappingUtils {
         return modelMapper.map(request, RequestDTO.class);
     }
 
-    public Request mapToRequest (RequestDTO requestDTO) {
+    public Request mapToRequest(RequestDTO requestDTO) {
         return modelMapper.map(requestDTO, Request.class);
     }
 
@@ -46,7 +46,7 @@ public class MappingUtils {
         return modelMapper.map(specialty, SpecialtyDTO.class);
     }
 
-    public Specialty mapToSpecialty (SpecialtyDTO specialtyDTO) {
+    public Specialty mapToSpecialty(SpecialtyDTO specialtyDTO) {
         return modelMapper.map(specialtyDTO, Specialty.class);
     }
 }

@@ -21,25 +21,25 @@ public class SpecialtyController {
     }
 
     @GetMapping()
-    public String index(Model model){
+    public String index(Model model) {
         model.addAttribute("specialties", specialtyServiceImpl.findAll());
         return "specialties/index";
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("specialty", specialtyServiceImpl.findById(id));
         return "specialties/show";
     }
 
     @GetMapping("/new")
-    public String newSpecialty(@ModelAttribute("specialty") SpecialtyDTO specialtyDTO){
+    public String newSpecialty(@ModelAttribute("specialty") SpecialtyDTO specialtyDTO) {
         return "specialties/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("specialty") @Valid SpecialtyDTO specialtyDTO, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String create(@ModelAttribute("specialty") @Valid SpecialtyDTO specialtyDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "specialties/new";
         }
 
@@ -48,15 +48,15 @@ public class SpecialtyController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id){
+    public String edit(Model model, @PathVariable("id") Long id) {
         model.addAttribute("specialty", specialtyServiceImpl.findById(id));
         return "specialties/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("specialty") @Valid SpecialtyDTO specialtyDTO, BindingResult bindingResult,
-                         @PathVariable("id") int id){
-        if(bindingResult.hasErrors()){
+                         @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
             return "specialties/edit";
         }
 
@@ -65,7 +65,7 @@ public class SpecialtyController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") Long id) {
         specialtyServiceImpl.delete(id);
         return "redirect:/specialties";
     }

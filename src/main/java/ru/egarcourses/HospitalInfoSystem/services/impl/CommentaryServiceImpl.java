@@ -7,9 +7,9 @@ import ru.egarcourses.HospitalInfoSystem.dto.CommentaryDTO;
 import ru.egarcourses.HospitalInfoSystem.models.Commentary;
 import ru.egarcourses.HospitalInfoSystem.repositories.CommentaryRepository;
 import ru.egarcourses.HospitalInfoSystem.services.CommentaryService;
-import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     }
 
     @Override
-    public CommentaryDTO findById(int id) {
+    public CommentaryDTO findById(Long id) {
         Optional<Commentary> foundCommentary = commentaryRepository.findById(id);
         if (!foundCommentary.isPresent()) {
             throw new NotFoundException("Commentary not found");
@@ -54,18 +54,18 @@ public class CommentaryServiceImpl implements CommentaryService {
 
     @Transactional
     @Override
-    public void update(int id, CommentaryDTO updatedCommentaryDTO) {
+    public void update(Long id, CommentaryDTO updatedCommentaryDTO) {
+        if (!commentaryRepository.findById(id).isPresent()) {
+            throw new NotFoundException("Comment not found");
+        }
         Commentary updatedCommentary = mappingUtils.mapToCommentary(updatedCommentaryDTO);
         updatedCommentary.setId(id);
         commentaryRepository.save(updatedCommentary);
-        if (!commentaryRepository.findById(id).equals(updatedCommentary)) {
-            throw new NotUpdatedException("Comment not updated");
-        }
     }
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         if (!commentaryRepository.findById(id).isPresent()) {
             throw new NotFoundException("Comment not found");
         }

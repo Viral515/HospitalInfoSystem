@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.egarcourses.HospitalInfoSystem.models.Patient;
 
 @Repository
-public interface PatientRepository extends JpaRepository<Patient, Integer> {
+public interface PatientRepository extends JpaRepository<Patient, Long> {
 }

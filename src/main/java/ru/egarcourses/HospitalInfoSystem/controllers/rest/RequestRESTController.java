@@ -4,18 +4,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.RequestDTO;
-import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.services.impl.PatientServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.services.impl.RequestServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotCreatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,21 +26,21 @@ public class RequestRESTController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<RequestDTO>> index(){
+    public ResponseEntity<List<RequestDTO>> index() {
         final List<RequestDTO> requests = requestServiceImpl.findAll();
         return ResponseEntity.ok(requests);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RequestDTO> show(@PathVariable("id") int id){
+    public ResponseEntity<RequestDTO> show(@PathVariable("id") Long id) {
         final RequestDTO requestDTO = requestServiceImpl.findById(id);
         return ResponseEntity.ok(requestDTO);
     }
 
     @PostMapping()
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid RequestDTO requestDTO,
-                                             BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+                                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
@@ -59,8 +55,8 @@ public class RequestRESTController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<HttpStatus> update(@RequestBody @Valid RequestDTO requestDTO, BindingResult bindingResult,
-                                             @PathVariable("id") int id){
-        if(bindingResult.hasErrors()){
+                                             @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
@@ -74,7 +70,7 @@ public class RequestRESTController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id){
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Long id) {
         requestServiceImpl.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

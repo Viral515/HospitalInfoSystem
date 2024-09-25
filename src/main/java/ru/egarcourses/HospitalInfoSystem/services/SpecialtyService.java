@@ -8,11 +8,11 @@ public interface SpecialtyService {
 
     public List<SpecialtyDTO> findAll();
 
-    public SpecialtyDTO findById(int id);
+    public SpecialtyDTO findById(Long id);
 
     public void save(SpecialtyDTO specialtyDTO);
 
-    public void update(int id, SpecialtyDTO updatedSpecialtyDTO);
+    public void update(Long id, SpecialtyDTO updatedSpecialtyDTO);
 
-    public void delete(int id);
+    public void delete(Long id);
 }

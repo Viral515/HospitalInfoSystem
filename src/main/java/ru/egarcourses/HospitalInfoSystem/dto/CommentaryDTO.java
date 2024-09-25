@@ -1,66 +1,27 @@
 package ru.egarcourses.HospitalInfoSystem.dto;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class CommentaryDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Range(min = 1, max = 5, message = "The score must be a number from 1 to 5")
     @NotNull
-    @Digits(integer = 1, fraction = 0, message = "The score must be a number")
     private int score;
 
-    @Column(name = "description")
     private String description;
 
-    private int doctorId;
-
-    public CommentaryDTO() {
-    }
-
-    public CommentaryDTO(int score, String description) {
-        this.score = score;
-        this.description = description;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private DoctorDTO doctor;
 }

@@ -7,10 +7,9 @@ import ru.egarcourses.HospitalInfoSystem.dto.DoctorDTO;
 import ru.egarcourses.HospitalInfoSystem.models.Doctor;
 import ru.egarcourses.HospitalInfoSystem.repositories.DoctorRepository;
 import ru.egarcourses.HospitalInfoSystem.services.DoctorService;
-import ru.egarcourses.HospitalInfoSystem.util.MappingUtils;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.util.exceptions.NotUpdatedException;
+import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
+import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +34,11 @@ public class DoctorServiceImpl implements DoctorService {
         if (doctors.isEmpty()) {
             throw new NotFoundException("Doctors not founded");
         }
-        return doctorRepository.findAll().stream().map(mappingUtils::mapToDoctorDTO).collect(Collectors.toList());
+        return doctors.stream().map(mappingUtils::mapToDoctorDTO).collect(Collectors.toList());
     }
 
     @Override
-    public DoctorDTO findById(int id) {
+    public DoctorDTO findById(Long id) {
         Optional<Doctor> doctor = doctorRepository.findById(id);
         if (!doctor.isPresent()) {
             throw new NotFoundException("Doctor not found");
@@ -55,18 +54,18 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Transactional
     @Override
-    public void update(int id, DoctorDTO updatedDoctorDTO) {
+    public void update(Long id, DoctorDTO updatedDoctorDTO) {
+        if (!doctorRepository.findById(id).isPresent()) {
+            throw new NotFoundException("Doctor not found");
+        }
         Doctor updatedDoctor = mappingUtils.mapToDoctor(updatedDoctorDTO);
         updatedDoctor.setId(id);
         doctorRepository.save(updatedDoctor);
-        if (doctorRepository.findById(updatedDoctor.getId()).equals(updatedDoctor)) {
-            throw new NotUpdatedException("Doctor not updated");
-        }
     }
 
     @Transactional
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         if (!doctorRepository.findById(id).isPresent()) {
             throw new NotFoundException("Doctor not found");
         }

@@ -8,11 +8,11 @@ public interface RequestService {
 
     public List<RequestDTO> findAll();
 
-    public RequestDTO findById(int id);
+    public RequestDTO findById(Long id);
 
     public void save(RequestDTO requestDTO);
 
-    public void update(int id, RequestDTO updatedRequestDTO);
+    public void update(Long id, RequestDTO updatedRequestDTO);
 
-    public void delete(int id);
+    public void delete(Long id);
 }
