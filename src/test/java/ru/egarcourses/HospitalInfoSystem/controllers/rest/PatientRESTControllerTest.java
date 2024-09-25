@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import ru.egarcourses.HospitalInfoSystem.dto.CommentaryDTO;
-import ru.egarcourses.HospitalInfoSystem.services.impl.CommentaryServiceImpl;
+import ru.egarcourses.HospitalInfoSystem.dto.PatientDTO;
+import ru.egarcourses.HospitalInfoSystem.services.impl.PatientServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotCreatedException;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
@@ -20,38 +20,37 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CommentaryRESTControllerTest {
-
+class PatientRESTControllerTest {
     @Mock
-    CommentaryServiceImpl commentaryServiceImpl;
+    PatientServiceImpl patientServiceImpl;
 
     @InjectMocks
-    CommentaryRESTController commentaryRESTController;
+    PatientRESTController patientRESTController;
 
     @Test
-    void testIndex_ReturnResponseCommentariesWithStatusOk() {
-        when(commentaryServiceImpl.findAll()).thenReturn(List.of(new CommentaryDTO()));
-        ResponseEntity<List<CommentaryDTO>> response = commentaryRESTController.index();
+    void testIndex_ReturnResponsePatientsWithStatusOk() {
+        when(patientServiceImpl.findAll()).thenReturn(List.of(new PatientDTO()));
+        ResponseEntity<List<PatientDTO>> response = patientRESTController.index();
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void testShow() {
-        when(commentaryServiceImpl.findById(1L)).thenReturn(new CommentaryDTO());
-        ResponseEntity<CommentaryDTO> response = commentaryRESTController.show(1L);
+        when(patientServiceImpl.findById(1L)).thenReturn(new PatientDTO());
+        ResponseEntity<PatientDTO> response = patientRESTController.show(1L);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void testCreate_valid() {
-        CommentaryDTO commentaryDTO = new CommentaryDTO();
-        commentaryRESTController.create(commentaryDTO, mock(BindingResult.class));
-        verify(commentaryServiceImpl).save(commentaryDTO);
+        PatientDTO patientDTO = new PatientDTO();
+        patientRESTController.create(patientDTO, mock(BindingResult.class));
+        verify(patientServiceImpl).save(patientDTO);
     }
 
     @Test
     public void testCreate_invalid() {
-        CommentaryDTO commentaryDTO = new CommentaryDTO();
+        PatientDTO patientDTO = new PatientDTO();
         BindingResult bindingResult = mock(BindingResult.class);
         doReturn(true).when(bindingResult).hasErrors();
         FieldError fieldError = mock(FieldError.class);
@@ -60,22 +59,22 @@ class CommentaryRESTControllerTest {
         doReturn("defaultField1Message").when(fieldError).getDefaultMessage();
 
         Exception exception = assertThrows(NotCreatedException.class,
-                () -> commentaryRESTController.create(commentaryDTO, bindingResult));
+                () -> patientRESTController.create(patientDTO, bindingResult));
 
         assertEquals("field1 - defaultField1Message;", exception.getMessage());
-        verify(commentaryServiceImpl, times(0)).save(commentaryDTO);
+        verify(patientServiceImpl, times(0)).save(patientDTO);
     }
 
     @Test
     public void testUpdate_valid() {
-        CommentaryDTO commentaryDTO = new CommentaryDTO();
-        commentaryRESTController.update(commentaryDTO, mock(BindingResult.class),1L);
-        verify(commentaryServiceImpl).update(1L, commentaryDTO);
+        PatientDTO patientDTO = new PatientDTO();
+        patientRESTController.update(patientDTO, mock(BindingResult.class),1L);
+        verify(patientServiceImpl).update(1L, patientDTO);
     }
 
     @Test
     public void testUpdate_invalid() {
-        CommentaryDTO commentaryDTO = new CommentaryDTO();
+        PatientDTO patientDTO = new PatientDTO();
         BindingResult bindingResult = mock(BindingResult.class);
         doReturn(true).when(bindingResult).hasErrors();
         FieldError fieldError = mock(FieldError.class);
@@ -84,16 +83,16 @@ class CommentaryRESTControllerTest {
         doReturn("defaultField1Message").when(fieldError).getDefaultMessage();
 
         Exception exception = assertThrows(NotUpdatedException.class,
-                () -> commentaryRESTController.update(commentaryDTO, bindingResult, 1L));
+                () -> patientRESTController.update(patientDTO, bindingResult, 1L));
 
         assertEquals("field1 - defaultField1Message;", exception.getMessage());
-        verify(commentaryServiceImpl, times(0)).update(1L, commentaryDTO);
+        verify(patientServiceImpl, times(0)).update(1L, patientDTO);
     }
 
     @Test
     public void testDelete() {
-        commentaryRESTController.delete(1L);
-        verify(commentaryServiceImpl).delete(1L);
+        patientRESTController.delete(1L);
+        verify(patientServiceImpl).delete(1L);
         assertEquals(HttpStatus.OK, ResponseEntity.ok(HttpStatus.OK).getStatusCode());
     }
 }

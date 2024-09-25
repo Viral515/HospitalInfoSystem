@@ -13,6 +13,7 @@ import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class RequestServiceImpl implements RequestService {
 
-    private static final int MAX_REQUEST_IN_DAY_COUNT = 9;
+    private static final int MAX_REQUEST_IN_DAY_COUNT = 20;
 
     private final RequestRepository requestRepository;
     private final MappingUtils mappingUtils;
@@ -50,34 +51,20 @@ public class RequestServiceImpl implements RequestService {
         return mappingUtils.mapToRequestDTO(foundRequest.get());
     }
 
-    public List<RequestDTO> findAllByDoctorIdAndDesiredDate(Long doctorId, LocalDate desiredDate) {
-        List<Request> requests = requestRepository.findAllByDoctorIdAndDesiredDate(doctorId, desiredDate);
-        if (requests.isEmpty()) {
-            throw new NotFoundException("Requests not found");
-        }
-        return requests.stream().map(mappingUtils::mapToRequestDTO).collect(Collectors.toList());
-    }
-
     @Transactional
     @Override
     public void save(RequestDTO requestDTO) {
-        List<Request> requests = requestRepository.findAllByDoctorIdAndDesiredDate(requestDTO.getDoctor().getId(),
-                requestDTO.getDesiredDate());
-        if (requests.stream().count() > MAX_REQUEST_IN_DAY_COUNT) {
-            throw new NotCreatedException("Requests not created. The schedule for this day is full.");
-        }
-        requestRepository.save(mappingUtils.mapToRequest(requestDTO));
+        UpdateAllTimes(requestDTO, true);
     }
 
     @Transactional
     @Override
     public void update(Long id, RequestDTO updatedRequestDTO) {
-        Request updatedRequest = mappingUtils.mapToRequest(updatedRequestDTO);
-        updatedRequest.setId(id);
-        requestRepository.save(updatedRequest);
-        if (requestRepository.findById(id).equals(updatedRequest)) {
-            throw new NotUpdatedException("Request not updated");
+        if (!requestRepository.findById(id).isPresent()) {
+            throw new NotFoundException("Request not found");
         }
+        updatedRequestDTO.setId(id);
+        UpdateAllTimes(updatedRequestDTO, false);
     }
 
     @Transactional
@@ -87,5 +74,27 @@ public class RequestServiceImpl implements RequestService {
             throw new NotFoundException("Request not found");
         }
         requestRepository.deleteById(id);
+    }
+
+    private void UpdateAllTimes(RequestDTO requestDTO, boolean save) {
+        Request updatedRequest = mappingUtils.mapToRequest(requestDTO);
+        List<Request> requests = requestRepository.findAllByDoctorIdAndDesiredDate(updatedRequest.getDoctor().getId(),
+                updatedRequest.getDesiredDate());
+        int requestsPerDayToDoctorCount = requests.size();
+        if (requestsPerDayToDoctorCount > MAX_REQUEST_IN_DAY_COUNT && save) {
+            throw new NotCreatedException("Requests not created. The schedule for this day is full.");
+        }
+        if (requestsPerDayToDoctorCount > MAX_REQUEST_IN_DAY_COUNT && !save) {
+            throw new NotUpdatedException("Requests not updated. The schedule for this day is full.");
+        }
+        int i = 0;
+        requests.add(updatedRequest);
+        for(Request request : requests) {
+            int hours = ((i * 15) / 60) + 8;
+            int minutes = (i * 15) % 60;
+            request.setApprovedDate(updatedRequest.getDesiredDate().atTime(hours, minutes));
+            requestRepository.save(request);
+            i++;
+        }
     }
 }

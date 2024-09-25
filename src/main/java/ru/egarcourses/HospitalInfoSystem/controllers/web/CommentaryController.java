@@ -66,8 +66,10 @@ public class CommentaryController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("commentaryDTO", commentaryServiceImpl.findById(id));
-        model.addAttribute("commentaryDoctor", commentaryServiceImpl.findById(id).getDoctor().getFullName());
+        CommentaryDTO commentaryDTO = commentaryServiceImpl.findById(id);
+        model.addAttribute("commentaryDTO", commentaryDTO);
+        model.addAttribute("commentaryDoctor",
+                doctorServiceImpl.findById(commentaryDTO.getDoctor().getId()).getFullName());
         return "commentaries/edit";
     }
 

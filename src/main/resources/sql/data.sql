@@ -28,9 +28,9 @@ VALUES (2, 4, 'Nice doctor.');
 
 --Insert requests--
 
-INSERT INTO Request(patient_id, doctor_id, desired_date)
-VALUES (1, 1, '2024-10-21');
-INSERT INTO Request(patient_id, doctor_id, desired_date)
-VALUES (1, 2, '2024-10-25');
-INSERT INTO Request(patient_id, doctor_id, desired_date)
-VALUES (2, 1, '2024-10-26');
+INSERT INTO Request(patient_id, doctor_id, desired_date, approved_date)
+VALUES (1, 1, '2024-10-21', '2024-10-21T01:00:00Z');
+INSERT INTO Request(patient_id, doctor_id, desired_date, approved_date)
+VALUES (1, 2, '2024-10-25', '2024-10-25T01:00:00Z');
+INSERT INTO Request(patient_id, doctor_id, desired_date, approved_date)
+VALUES (2, 1, '2024-10-26', '2024-10-26T01:00:00Z');

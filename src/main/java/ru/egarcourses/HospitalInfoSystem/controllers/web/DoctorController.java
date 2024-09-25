@@ -58,8 +58,9 @@ public class DoctorController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("doctor", doctorServiceImpl.findById(id));
-        model.addAttribute("doctorSpecialty", doctorServiceImpl.findById(id).getSpecialty().getName());
+        DoctorDTO doctorDTO = doctorServiceImpl.findById(id);
+        model.addAttribute("doctor", doctorDTO);
+        model.addAttribute("doctorSpecialty", doctorDTO.getSpecialty().getName());
         return "doctors/edit";
     }
 

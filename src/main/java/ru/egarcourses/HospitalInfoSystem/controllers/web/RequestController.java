@@ -68,9 +68,10 @@ public class RequestController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("request", requestServiceImpl.findById(id));
-        model.addAttribute("requestPatient", requestServiceImpl.findById(id).getPatient().getFullName());
-        model.addAttribute("requestDoctor", requestServiceImpl.findById(id).getDoctor());
+        RequestDTO requestDTO = requestServiceImpl.findById(id);
+        model.addAttribute("request", requestDTO);
+        model.addAttribute("requestPatient", requestDTO.getPatient().getFullName());
+        model.addAttribute("requestDoctor", requestDTO.getDoctor());
         return "requests/edit";
     }
 
