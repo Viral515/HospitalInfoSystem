@@ -63,13 +63,6 @@ class RequestServiceImplTest {
     }
 
     @Test
-    public void testFindAll_ThrowsNotFoundException() {
-        final List<Request> requests = new ArrayList<>();
-        doReturn(requests).when(requestRepository).findAll();
-        assertThrows(NotFoundException.class, () -> requestServiceImpl.findAll());
-    }
-
-    @Test
     public void testFindById_ReturnDoctorDTO() {
         Request request = mock(Request.class);
         RequestDTO requestDTO = mock(RequestDTO.class);

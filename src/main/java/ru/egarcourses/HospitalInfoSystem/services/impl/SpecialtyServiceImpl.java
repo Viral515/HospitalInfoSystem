@@ -15,28 +15,51 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Класс реализующий интерфейс сервиса сущности специальности
+ */
 @Service
 @Transactional(readOnly = true)
 public class SpecialtyServiceImpl implements SpecialtyService {
 
+    /**
+     * Поле репозитория специальности для работы с базой данных
+     */
     private final SpecialtyRepository specialtyRepository;
+    /**
+     * Поле маппера сущностей в DTO и обратно
+     */
     private final MappingUtils mappingUtils;
 
+    /**
+     * Конструктор - создаёт новый объект сервиса работы со специальностями
+     *
+     * @param specialtyRepository - объект репозитория специальности
+     * @param mappingUtils        - объект маппера сущностей
+     */
     @Autowired
     public SpecialtyServiceImpl(SpecialtyRepository specialtyRepository, MappingUtils mappingUtils) {
         this.specialtyRepository = specialtyRepository;
         this.mappingUtils = mappingUtils;
     }
 
+    /**
+     * Функция получения списка всех записей из таблицы специальности в базе данных
+     *
+     * @return возвращает список DTO специальностей
+     */
     @Override
     public List<SpecialtyDTO> findAll() {
         List<Specialty> specialties = specialtyRepository.findAll();
-        if (specialties.isEmpty()) {
-            throw new NotFoundException("Specialties are not found");
-        }
         return specialties.stream().map(mappingUtils::mapToSpecialtyDTO).collect(Collectors.toList());
     }
 
+    /**
+     * Функция получения записи из таблицы специальности в базе данных по заданному id
+     *
+     * @param id - уникальный идентификатор записи
+     * @return возвращает DTO специальности
+     */
     @Override
     public SpecialtyDTO findById(Long id) {
         Optional<Specialty> specialty = specialtyRepository.findById(id);
@@ -46,12 +69,23 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         return mappingUtils.mapToSpecialtyDTO(specialty.get());
     }
 
+    /**
+     * Функция сохранения новой записи в таблице специальностей в базе данных
+     *
+     * @param specialtyDTO - DTO новой специальности
+     */
     @Transactional
     @Override
     public void save(SpecialtyDTO specialtyDTO) {
         specialtyRepository.save(mappingUtils.mapToSpecialty(specialtyDTO));
     }
 
+    /**
+     * Функция обновления существующей записи в таблице специальностей в базе данных по заданному id
+     *
+     * @param id                  - уникальный идентификатор записи
+     * @param updatedSpecialtyDTO - DTO обновлённой специальности
+     */
     @Transactional
     @Override
     public void update(Long id, SpecialtyDTO updatedSpecialtyDTO) {
@@ -63,6 +97,11 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         specialtyRepository.save(updatedSpecialty);
     }
 
+    /**
+     * Функция удаления существующей записи из таблицы специальностей в базе даннных по заданному id
+     *
+     * @param id - уникальный идентификатор записи
+     */
     @Transactional
     @Override
     public void delete(Long id) {

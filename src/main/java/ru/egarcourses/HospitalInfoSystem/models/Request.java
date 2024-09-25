@@ -8,6 +8,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ *
+ */
 @Entity
 @Table(name = "Request")
 @Getter
@@ -18,24 +21,39 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class Request {
 
+    /**
+     *
+     */
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     *
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
+    /**
+     *
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
+    /**
+     *
+     */
     @Column(name = "desired_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Future
     private LocalDate desiredDate;
 
+    /**
+     *
+     */
     @Column(name = "approved_date")
     private LocalDateTime approvedDate;
 }

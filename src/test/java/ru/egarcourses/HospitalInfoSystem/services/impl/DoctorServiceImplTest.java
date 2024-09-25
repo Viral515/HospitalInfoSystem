@@ -55,13 +55,6 @@ class DoctorServiceImplTest {
     }
 
     @Test
-    public void testFindAll_ThrowsNotFoundException() {
-        final List<Doctor> doctors = new ArrayList<>();
-        doReturn(doctors).when(doctorRepository).findAll();
-        assertThrows(NotFoundException.class, () -> doctorServiceImpl.findAll());
-    }
-
-    @Test
     public void testFindById_ReturnDoctorDTO() {
         Doctor doctor = mock(Doctor.class);
         DoctorDTO doctorDTO = mock(DoctorDTO.class);

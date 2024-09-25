@@ -55,13 +55,6 @@ class SpecialtyServiceImplTest {
     }
 
     @Test
-    public void testFindAll_ThrowsNotFoundException() {
-        final List<Specialty> specialties = new ArrayList<>();
-        doReturn(specialties).when(specialtyRepository).findAll();
-        assertThrows(NotFoundException.class, () -> specialtyServiceImpl.findAll());
-    }
-
-    @Test
     public void testFindById_ReturnDoctorDTO() {
         Specialty specialty = mock(Specialty.class);
         SpecialtyDTO specialtyDTO = mock(SpecialtyDTO.class);

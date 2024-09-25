@@ -18,30 +18,56 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Класс реализующий интерфейс сервиса для работы с записями на приём
+ */
 @Service
 @Transactional(readOnly = true)
 public class RequestServiceImpl implements RequestService {
 
+    /**
+     * Поле хранящее количество максимальных записей на день у врача
+     */
     private static final int MAX_REQUEST_IN_DAY_COUNT = 20;
 
+    /**
+     * Поле репозитория записи на приём для работы с базой данных
+     */
     private final RequestRepository requestRepository;
+    /**
+     * Поле маппера сущностей в DTO и обратно
+     */
     private final MappingUtils mappingUtils;
 
+    /**
+     * Конструктор - создаёт новый объект сервиса работы с записями на приём
+     *
+     * @param requestRepository - объект репозитория записи на приём
+     * @param mappingUtils      - объект маппера сущностей
+     */
     @Autowired
     public RequestServiceImpl(RequestRepository requestRepository, MappingUtils mappingUtils) {
         this.requestRepository = requestRepository;
         this.mappingUtils = mappingUtils;
     }
 
+    /**
+     * Функция получения списка всех записей из таблицы записей на приём в базе данных
+     *
+     * @return возврает список DTO записей на приём
+     */
     @Override
     public List<RequestDTO> findAll() {
         List<Request> requests = requestRepository.findAll();
-        if (requests.isEmpty()) {
-            throw new NotFoundException("Requests not founded");
-        }
         return requests.stream().map(mappingUtils::mapToRequestDTO).collect(Collectors.toList());
     }
 
+    /**
+     * Функция получения записи из таблицы специальности в базе данных по заданному id
+     *
+     * @param id - уникальный идентификатор записи
+     * @return возвращает DTO найденной записи на приём
+     */
     @Override
     public RequestDTO findById(Long id) {
         Optional<Request> foundRequest = requestRepository.findById(id);
@@ -51,12 +77,23 @@ public class RequestServiceImpl implements RequestService {
         return mappingUtils.mapToRequestDTO(foundRequest.get());
     }
 
+    /**
+     * Функция сохранения новой записи в таблице записей на приём в базе данных
+     *
+     * @param requestDTO - DTO новой записи
+     */
     @Transactional
     @Override
     public void save(RequestDTO requestDTO) {
         UpdateAllTimes(requestDTO, true);
     }
 
+    /**
+     * Функция обновления существующей записи в таблице специальностей в базе данных по заданному id
+     *
+     * @param id                - уникальный идентификатор записи
+     * @param updatedRequestDTO - DTO обновлённой записи на приём
+     */
     @Transactional
     @Override
     public void update(Long id, RequestDTO updatedRequestDTO) {
@@ -67,6 +104,11 @@ public class RequestServiceImpl implements RequestService {
         UpdateAllTimes(updatedRequestDTO, false);
     }
 
+    /**
+     * Функция удаления существующей записи в таблице записей на приём по заданному id
+     *
+     * @param id - уникальный идентификатор записи
+     */
     @Transactional
     @Override
     public void delete(Long id) {
@@ -76,6 +118,14 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.deleteById(id);
     }
 
+    /**
+     * Функция сохранения новой записи на день и изменения времени посещения у всех остальных
+     * записей на этот день
+     *
+     * @param requestDTO - DTO новой записи на приём
+     * @param save       - параметр для обозначения типа функции, в которой метод был вызван.
+     *                   "true" для метода "save", "false" для метода "update"
+     */
     private void UpdateAllTimes(RequestDTO requestDTO, boolean save) {
         Request updatedRequest = mappingUtils.mapToRequest(requestDTO);
         List<Request> requests = requestRepository.findAllByDoctorIdAndDesiredDate(updatedRequest.getDoctor().getId(),
@@ -89,7 +139,7 @@ public class RequestServiceImpl implements RequestService {
         }
         int i = 0;
         requests.add(updatedRequest);
-        for(Request request : requests) {
+        for (Request request : requests) {
             int hours = ((i * 15) / 60) + 8;
             int minutes = (i * 15) % 60;
             request.setApprovedDate(updatedRequest.getDesiredDate().atTime(hours, minutes));

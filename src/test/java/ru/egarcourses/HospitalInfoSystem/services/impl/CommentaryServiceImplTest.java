@@ -63,13 +63,6 @@ class CommentaryServiceImplTest {
     }
 
     @Test
-    public void testFindAll_ThrowsNotFoundException() {
-        final List<Commentary> commentaries = new ArrayList<>();
-        doReturn(commentaries).when(commentaryRepository).findAll();
-        assertThrows(NotFoundException.class, () -> commentaryServiceImpl.findAll());
-    }
-
-    @Test
     public void testFindById_ReturnCommentaryDTO() {
         Commentary commentary = new Commentary(1L, 5, "descr1", mock(Doctor.class));
         CommentaryDTO commentaryDTO = new CommentaryDTO(1L, 5, "descr1", mock(DoctorDTO.class));
