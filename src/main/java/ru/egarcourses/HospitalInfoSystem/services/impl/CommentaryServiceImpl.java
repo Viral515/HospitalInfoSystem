@@ -9,7 +9,6 @@ import ru.egarcourses.HospitalInfoSystem.repositories.CommentaryRepository;
 import ru.egarcourses.HospitalInfoSystem.services.CommentaryService;
 import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +62,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Override
     public CommentaryDTO findById(Long id) {
         Optional<Commentary> foundCommentary = commentaryRepository.findById(id);
-        if (!foundCommentary.isPresent()) {
+        if (foundCommentary.isEmpty()) {
             throw new NotFoundException("Commentary not found");
         }
         return mappingUtils.mapToCommentaryDTO(foundCommentary.get());
@@ -89,7 +88,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Transactional
     @Override
     public void update(Long id, CommentaryDTO updatedCommentaryDTO) {
-        if (!commentaryRepository.findById(id).isPresent()) {
+        if (commentaryRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Comment not found");
         }
         Commentary updatedCommentary = mappingUtils.mapToCommentary(updatedCommentaryDTO);
@@ -105,7 +104,7 @@ public class CommentaryServiceImpl implements CommentaryService {
     @Transactional
     @Override
     public void delete(Long id) {
-        if (!commentaryRepository.findById(id).isPresent()) {
+        if (commentaryRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Comment not found");
         }
         commentaryRepository.deleteById(id);

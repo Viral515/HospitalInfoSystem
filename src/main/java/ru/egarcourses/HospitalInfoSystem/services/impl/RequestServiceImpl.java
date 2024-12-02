@@ -12,8 +12,6 @@ import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotCreatedException;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,7 +69,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public RequestDTO findById(Long id) {
         Optional<Request> foundRequest = requestRepository.findById(id);
-        if (!foundRequest.isPresent()) {
+        if (foundRequest.isEmpty()) {
             throw new NotFoundException("Request not found");
         }
         return mappingUtils.mapToRequestDTO(foundRequest.get());
@@ -97,7 +95,7 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     @Override
     public void update(Long id, RequestDTO updatedRequestDTO) {
-        if (!requestRepository.findById(id).isPresent()) {
+        if (requestRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Request not found");
         }
         updatedRequestDTO.setId(id);
@@ -112,7 +110,7 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     @Override
     public void delete(Long id) {
-        if (!requestRepository.findById(id).isPresent()) {
+        if (requestRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Request not found");
         }
         requestRepository.deleteById(id);

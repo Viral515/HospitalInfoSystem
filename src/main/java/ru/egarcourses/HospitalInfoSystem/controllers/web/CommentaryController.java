@@ -1,21 +1,15 @@
 package ru.egarcourses.HospitalInfoSystem.controllers.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.egarcourses.HospitalInfoSystem.dto.CommentaryDTO;
 import ru.egarcourses.HospitalInfoSystem.dto.DoctorDTO;
 import ru.egarcourses.HospitalInfoSystem.services.impl.CommentaryServiceImpl;
 import ru.egarcourses.HospitalInfoSystem.services.impl.DoctorServiceImpl;
-import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotCreatedException;
-import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
-
-import java.util.List;
 
 /**
  * Класс MVC контроллера для работы с сущностью отзыва

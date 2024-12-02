@@ -9,7 +9,6 @@ import ru.egarcourses.HospitalInfoSystem.repositories.DoctorRepository;
 import ru.egarcourses.HospitalInfoSystem.services.DoctorService;
 import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +62,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorDTO findById(Long id) {
         Optional<Doctor> doctor = doctorRepository.findById(id);
-        if (!doctor.isPresent()) {
+        if (doctor.isEmpty()) {
             throw new NotFoundException("Doctor not found");
         }
         return mappingUtils.mapToDoctorDTO(doctor.get());
@@ -89,7 +88,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Transactional
     @Override
     public void update(Long id, DoctorDTO updatedDoctorDTO) {
-        if (!doctorRepository.findById(id).isPresent()) {
+        if (doctorRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Doctor not found");
         }
         Doctor updatedDoctor = mappingUtils.mapToDoctor(updatedDoctorDTO);
@@ -105,7 +104,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Transactional
     @Override
     public void delete(Long id) {
-        if (!doctorRepository.findById(id).isPresent()) {
+        if (doctorRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Doctor not found");
         }
         doctorRepository.deleteById(id);

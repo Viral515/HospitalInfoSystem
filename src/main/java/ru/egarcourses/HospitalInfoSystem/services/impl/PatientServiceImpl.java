@@ -9,7 +9,6 @@ import ru.egarcourses.HospitalInfoSystem.repositories.PatientRepository;
 import ru.egarcourses.HospitalInfoSystem.services.PatientService;
 import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +62,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO findById(Long id) {
         Optional<Patient> foundPatient = patientRepository.findById(id);
-        if (!foundPatient.isPresent()) {
+        if (foundPatient.isEmpty()) {
             throw new NotFoundException("Patient not found");
         }
         return mappingUtils.mapToPatientDTO(foundPatient.get());
@@ -89,7 +88,7 @@ public class PatientServiceImpl implements PatientService {
     @Transactional
     @Override
     public void update(Long id, PatientDTO updatedPatientDTO) {
-        if (!patientRepository.findById(id).isPresent()) {
+        if (patientRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Patient not found");
         }
         Patient updatedPatient = mappingUtils.mapToPatient(updatedPatientDTO);
@@ -105,7 +104,7 @@ public class PatientServiceImpl implements PatientService {
     @Transactional
     @Override
     public void delete(Long id) {
-        if (!patientRepository.findById(id).isPresent()) {
+        if (patientRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Patient not found");
         }
         patientRepository.deleteById(id);

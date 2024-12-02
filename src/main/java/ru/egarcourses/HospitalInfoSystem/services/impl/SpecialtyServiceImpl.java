@@ -9,7 +9,6 @@ import ru.egarcourses.HospitalInfoSystem.repositories.SpecialtyRepository;
 import ru.egarcourses.HospitalInfoSystem.services.SpecialtyService;
 import ru.egarcourses.HospitalInfoSystem.utils.MappingUtils;
 import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotFoundException;
-import ru.egarcourses.HospitalInfoSystem.utils.exceptions.NotUpdatedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +62,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     @Override
     public SpecialtyDTO findById(Long id) {
         Optional<Specialty> specialty = specialtyRepository.findById(id);
-        if (!specialty.isPresent()) {
+        if (specialty.isEmpty()) {
             throw new NotFoundException("Specialty not found");
         }
         return mappingUtils.mapToSpecialtyDTO(specialty.get());
@@ -89,7 +88,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     @Transactional
     @Override
     public void update(Long id, SpecialtyDTO updatedSpecialtyDTO) {
-        if (!specialtyRepository.findById(id).isPresent()) {
+        if (specialtyRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Specialty not found");
         }
         Specialty updatedSpecialty = mappingUtils.mapToSpecialty(updatedSpecialtyDTO);
@@ -105,7 +104,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     @Transactional
     @Override
     public void delete(Long id) {
-        if (!specialtyRepository.findById(id).isPresent()) {
+        if (specialtyRepository.findById(id).isEmpty()) {
             throw new NotFoundException("Specialty not found");
         }
         specialtyRepository.deleteById(id);
